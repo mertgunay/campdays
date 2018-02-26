@@ -1,3 +1,3 @@
 # campdays
 
-This repository is a project of Software Engineering courses.
+This repository is a project of Software Engineering courses. Asdd deneme
