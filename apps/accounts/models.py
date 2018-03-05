@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -87,3 +89,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         """
         send_mail(subject, message, from_email, [self.email])
+
+class UserProfile(models.Model):
+    owner = models.OneToOneField(User, on_delete=models.CASCADE)
+    followers = models.ManyToManyField(User, related_name='followers', blank=True)
+    following = models.ManyToManyField(User, related_name='following', blank=True)
+
+    def __str__(self):
+        return self.owner.username
+
+@receiver(post_save, sender=User)
+def user_post_save_receiver(sender, instance, created, *args, **kwargs):
+	if created:
+		user_profile, created = UserProfile.objects.get_or_create(owner=instance)
