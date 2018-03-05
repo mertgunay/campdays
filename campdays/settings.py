@@ -82,10 +82,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#AUTH_USER_MODEL = 'accounts.User'
-#LOGIN_REDIRECT_URL = '/'
-#LOGIN_URL = '/user/login'
-#LOGOUT_REDIRECT_URL = '/user/login'
+AUTH_USER_MODEL = 'accounts.User'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login'
+LOGOUT_REDIRECT_URL = '/login'
 
 LANGUAGE_CODE = 'tr-TR'
 TIME_ZONE = 'Europe/Istanbul'
@@ -103,3 +103,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "ms/static"),
     os.path.join(BASE_DIR, "ms/media"),
 ]
+
+# For Dual Boot
+AUTHENTICATION_BACKENDS = [
+    'apps.accounts.backends.DualAuthentication',
+]
+
+AUTHENTICATION_METHOD = 'both'
+AUTHENTICATION_CASE_SENSITIVE = 'both'

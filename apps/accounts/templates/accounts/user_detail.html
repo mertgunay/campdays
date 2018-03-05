@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<br>
+<h4>User Detail Page</h4>
+<br>
+Username : {{object.username}}
+<br>
+Email : {{object.email}}
+<br>
+timestamp : {{object.timestamp}}
+<br>
+last_login : {{object.last_login}}
+<br><br>
+First Name : {{object.first_name}}
+<br>
+Last Name : {{object.last_name}}
+<br><br>
+
+<a href="{% url 'users:user_delete' object.username %}">Delete</a>
+<br>
+<a href="{% url 'users:user_update' object.username %}">Update</a>
+<br>
+<a href="{% url 'users:logout' %}">Logout</a>
+<br>
+<a href="{% url 'users:password_change' %}">Change Password</a>
+<br>
+
+{% endblock content %}
