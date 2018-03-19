@@ -1,10 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
 
-<form method="post">
-{% csrf_token %}
-{{form.as_p}}
-<button type="submit" name="button">Giriş yap</button>
-</form>
+<section class="log-wrapper">
+	<div class="container">
+		<div class="col-md-6 col-sm-10 col-md-offset-3 col-sm-offset-1">
+			<div class="log-box">
+				<h2>Camp <span class="theme-cl">Days!</span></h2>
+				<form method="post">
+          {% csrf_token %}
+          {{form.as_p}}
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-envelope theme-cl"></i></span>
+						<input type="text" class="form-control" placeholder="User Name">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-lock theme-cl"></i></span>
+						<input type="password" class="form-control" placeholder="Password">
+					</div>
+					<div class="text-center">
+            <button type="submit" class="btn theme-btn width-200 btn-radius" name="button">Giriş yap</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
 
 {% endblock content %}
