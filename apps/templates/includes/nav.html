@@ -1,4 +1,7 @@
 {% load static %}
+{% with request.resolver_match.url_name as name %}
+{% if name == 'login' or name == 'register' %}
+{% else %}
 <nav class="navbar navbar-default navbar-fixed navbar-transparent white bootsnav">
   <div class="container-fluid">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
@@ -93,9 +96,8 @@
 </nav>
 <!-- End Navigation -->
 <div class="clearfix"></div>
-
+{% endif %}
+{% endwith %}
 {% if request.user.is_authenticated %}
-
 {% else %}
-
 {% endif %}
