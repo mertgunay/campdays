@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from campowner.models import CampOwner
+
+admin.site.register(CampOwner)

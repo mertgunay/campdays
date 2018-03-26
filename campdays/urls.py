@@ -18,7 +18,7 @@ from django.urls import path, include
 from campdays.views import home
 
 urlpatterns = [
-    path('',home),
+    path('',home, name='home'),
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('superuser/', include('campowner.urls')),
