@@ -86,8 +86,14 @@
         </li>
 
         <li><a  href="javascript:void(0)"  data-toggle="modal" data-target="#signup">Sign In</a></li>
+        {% if request.user.is_superuser %}
+        <li><a  href="{% url 'campowner:pending_owners' %}">Admin Panel</a></li>
+        {% endif %}
+
       </ul>
+
       <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+        asdasd
         <li class="no-pd"><a href="add-listing.html" class="addlist"><i class="ti-user" aria-hidden="true"></i>Add Listing</a></li>
       </ul>
     </div>
