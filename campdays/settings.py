@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     # Apps
     'blog.apps.BlogConfig',
     'accounts.apps.AccountsConfig',
+    'campowner.apps.CampownerConfig',
 ]
 
 MIDDLEWARE = [
