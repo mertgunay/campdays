@@ -1,36 +1,51 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-  <a class="navbar-brand" href="/">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+{% load static %}
+{% with request.resolver_match.url_name as name %}
+{% if name == 'login' or name == 'register' %}
+{% else %}
+<nav class="navbar navbar-default navbar-fixed navbar-transparent white bootsnav">
+  <div class="container-fluid">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+      <i class="ti-align-left"></i>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">
-          Home
-        </a>
-      </li>
-    </ul>
-    <ul class="navbar-nav ml-auto">
-      {% if request.user.is_authenticated %}
-      <li class="nav-item">
-        <a class="nav-link" href="{{request.user.get_absolute_url}}">
-          {{request.user.get_full_name}}
-        </a>
-      </li>
-      {% else %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'users:login' %}">
-          Login
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'users:register' %}">
-          Register
-        </a>
-      </li>
-      {% endif %}
-    </ul>
+    <!-- Start Header Navigation -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <img src="{% static 'assets/img/logo.png' %}" class="logo logo-display" alt="">
+        <img src="{% static 'assets/img/logo.png' %}" class="logo logo-scrolled" alt="">
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbar-menu">
+      <ul class="nav navbar-nav navbar-center" data-in="fadeInDown" data-out="fadeOutUp">
+        {% if request.user.is_superuser %}
+        <li><a  href="{% url 'campowner:pending_owners' %}">Admin Panel</a></li>
+        {% endif %}
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+        {% if request.user.is_authenticated %}
+        <li class="no-pd">
+          <a href="{% url 'users:user_detail' request.user.username %}" class="addlist">
+            <i class="ti-user" aria-hidden="true"></i>
+            Hoşgeldin, {{request.user.username}}
+          </a>
+        </li>
+        {% else %}
+        <li class="no-pd">
+          <a href="{% url 'users:login' %}" class="addlist">
+            <i class="ti-user" aria-hidden="true"></i>
+            Giriş yap
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
   </div>
 </nav>
+<!-- End Navigation -->
+<div class="clearfix"></div>
+{% endif %}
+{% endwith %}

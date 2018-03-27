@@ -1,11 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
-
-<form method="post">
-{% csrf_token %}
-{{form.as_p}}
-<button type="submit" name="button">Üye Ol</button>
-</form>
-
-
+<section class="log-wrapper">
+	<div class="container">
+		<div class="col-md-6 col-sm-10 col-md-offset-3 col-sm-offset-1">
+			<div class="log-box">
+				<h2>Camp <span class="theme-cl">Days!</span></h2>
+				<h4>Kayıt Ol</h4>
+				<form method="post">
+          {% csrf_token %}
+					{{ form.non_field_errors }}
+				  {% for hidden_field in form.hidden_fields %}
+				    {{ hidden_field.errors }}
+				  {% endfor %}
+					{% for field in form.visible_fields %}
+           {{ field.errors }}
+           {{ field }}
+				  {% endfor %}
+          <button type="submit" class="btn theme-btn width-200 btn-radius" name="button">Üye Ol</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
 {% endblock content %}

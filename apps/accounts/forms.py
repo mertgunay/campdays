@@ -7,6 +7,22 @@ User = get_user_model()
 
 class UserRegisterForm(forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(UserRegisterForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({
+            'class' : 'form-control',
+            'placeholder': 'Kullanıcı Adı',
+            'autocomplete': 'off',
+        })
+        self.fields['email'].widget.attrs.update({
+            'placeholder': 'E-Posta',
+            'class' : 'form-control',
+        })
+        self.fields['password'].widget.attrs.update({
+            'class' : 'form-control',
+            'placeholder': 'Şifre',
+        })
+
     class Meta:
         model = User
         fields = {
