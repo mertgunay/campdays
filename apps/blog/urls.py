@@ -5,3 +5,4 @@ app_name = 'blog'
 urlpatterns = [
     path('home/' )
 ]
+#deneme
