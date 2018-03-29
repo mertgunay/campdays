@@ -6,12 +6,14 @@
 <h1>{{ title }} is working! </h1>
 
 {% for obj in object_list %}
+/blog/id/
+{% url 'blog:blog_detail' obj.id %}
 
-<a href="/blog/{{ obj.id }}/ "> {{ obj.title }}</a> <br/>
-{{ obj.content }} <br/>
-{{ obj.timestamp }} <br/>
-{{ obj.updated }} <br/>
-{{ obj.id }} <br/>
+<a href="{{ obj.get_absolut_url }}"> {{ obj.title }} </a> <br/>
+  {{ obj.content }} <br/>
+  {{ obj.timestamp }} <br/>
+  {{ obj.updated }} <br/>
+  {{ obj.id }} <br/>
 
 {% endfor %}
 
