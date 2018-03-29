@@ -15,8 +15,6 @@ def blog_create(request):
         instance.save()
         messages.error(request, "Successfully Created")
         return HttpResponseRedirect(instance.get_absolut_url())
-    else:
-        messages.error(request, "Not Successfully Created")
 
     context = {
         "form": form,
@@ -35,13 +33,13 @@ def blog_detail(request, id=None):
 
 def blog_list(request):
 
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by("-timestampt")
     context = {
         "object_list": queryset,
         "title": "List"
     }
 
-    return render(request, "blog.html", context)
+    return render(request, "post_list.html", context)
 
 def blog_update(request, id=None):
 
