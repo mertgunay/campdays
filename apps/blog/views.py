@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 
 from .forms import PostForm
@@ -9,7 +10,7 @@ from .models import Post
 
 def blog_create(request):
 
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -33,10 +34,21 @@ def blog_detail(request, id=None):
 
 def blog_list(request):
 
-    queryset = Post.objects.all().order_by("-timestampt")
+    queryset_list = Post.objects.all() #.order_by("-timestampt")
+    paginator = Paginator(queryset_list, 5) # Show 10 contacts per page
+    page_request_var = "page"
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        queryset = paginator.page(1)
+    except EmptyPage:
+        queryset = paginator.page(paginator.num_pages)
+
     context = {
         "object_list": queryset,
-        "title": "List"
+        "title": "List",
+        "page_request_var": page_request_var,
     }
 
     return render(request, "post_list.html", context)
@@ -44,7 +56,7 @@ def blog_list(request):
 def blog_update(request, id=None):
 
     instance = get_object_or_404(Post, id=id)
-    form = PostForm(request.POST or None, instance=instance)
+    form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()

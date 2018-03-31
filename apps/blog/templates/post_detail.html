@@ -1,4 +1,4 @@
-{% extends "base1.html" %}
+{% extends "base.html" %}
 
 {% block head_title %}
 {{ instance.title }} | {{ block.super }}
@@ -11,7 +11,11 @@
 <div class="col-sm-6 col-sm-offset-3">
 
 <h1> {{ title }} <small> {{ instance.timestampt }} </small > </h1>
-
+<br>
+{% if instance.image %}
+  <img src="{{instance.image.url}}" class="img-responsive" alt="" width="100" height="100">
+{% endif %}
+<br>
 {{ instance.content | linebreaks }} <br/>
 
 </div>
