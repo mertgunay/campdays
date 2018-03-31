@@ -10,7 +10,7 @@ from .models import Post
 
 def blog_create(request):
 
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -44,7 +44,7 @@ def blog_list(request):
         queryset = paginator.page(1)
     except EmptyPage:
         queryset = paginator.page(paginator.num_pages)
-        
+
     context = {
         "object_list": queryset,
         "title": "List",
@@ -56,7 +56,7 @@ def blog_list(request):
 def blog_update(request, id=None):
 
     instance = get_object_or_404(Post, id=id)
-    form = PostForm(request.POST or None, instance=instance)
+    form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
