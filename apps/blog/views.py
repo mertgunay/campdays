@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 from django.contrib import messages
 
 from .forms import PostForm
@@ -10,9 +11,13 @@ from .models import Post
 
 def blog_create(request):
 
+    if not request.user.is_authenticated:
+        raise Http404
+
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
+        instance.user = request.user
         instance.save()
         messages.error(request, "Successfully Created")
         return HttpResponseRedirect(instance.get_absolut_url())
@@ -35,6 +40,14 @@ def blog_detail(request, id=None):
 def blog_list(request):
 
     queryset_list = Post.objects.all() #.order_by("-timestampt")
+
+    query = request.GET.get("q")
+    if query:
+        queryset_list = queryset_list.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query)
+                ).distinct()
+
     paginator = Paginator(queryset_list, 5) # Show 10 contacts per page
     page_request_var = "page"
     page = request.GET.get(page_request_var)
@@ -55,10 +68,14 @@ def blog_list(request):
 
 def blog_update(request, id=None):
 
+    if not request.user.is_authenticated:
+        raise Http404
+
     instance = get_object_or_404(Post, id=id)
     form = PostForm(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
+        instance.user = request.user
         instance.save()
         messages.error(request, "Post Updated")
         return HttpResponseRedirect(instance.get_absolut_url())
