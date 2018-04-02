@@ -11,9 +11,9 @@ app_name = 'blog'
 
 urlpatterns = [
     path('', blog_list, name='list'),
-    path('create', blog_create),
-    path('<id>', blog_detail, name='blog_detail'),
-    path('<id>/update/', blog_update, name='blog_update'),
-    path('<id>/delete/', blog_delete),
+    path('create', blog_create, name='create'),
+    path('<slug>', blog_detail, name='blog_detail'),
+    path('<slug>/update/', blog_update, name='blog_update'),
+    path('<slug>/delete/', blog_delete),
 
 ]
