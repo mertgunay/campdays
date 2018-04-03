@@ -1,3 +1,4 @@
+from urllib.parse import quote
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -29,9 +30,11 @@ def blog_create(request):
 def blog_detail(request, slug):
 
     instance = get_object_or_404(Post, slug=slug)
+    share_string = quote(instance.content)
     context = {
         "title": instance.title,
         "instance": instance,
+        "share_string": share_string,
     }
 
     return render(request, "post_detail.html", context)
@@ -44,10 +47,12 @@ def blog_list(request):
     if query:
         queryset_list = queryset_list.filter(
                 Q(title__icontains=query) |
-                Q(content__icontains=query)
+                Q(content__icontains=query) |
+                Q(user__first_name__icontains=query) |
+                Q(user__last_name__icontains=query)
                 ).distinct()
 
-    paginator = Paginator(queryset_list, 2) # Show 10 contacts per page
+    paginator = Paginator(queryset_list, 10) # Show 10 contacts per page
     page_request_var = "page"
     page = request.GET.get(page_request_var)
     try:

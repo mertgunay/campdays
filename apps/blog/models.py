@@ -45,6 +45,6 @@ class Post(models.Model):
         ordering = ["-timestampt", "-updated"]
 
 @receiver(pre_save, sender=Post)
-def campowner_pre_save_receiver(sender, instance, *args, **kwargs):
+def user_pre_save_receiver(sender, instance, *args, **kwargs):
 		if not instance.slug:
 			instance.slug = unique_slug_generator_for_blog(instance)
