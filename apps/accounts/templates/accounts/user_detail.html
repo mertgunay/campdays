@@ -1,24 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
 
-<br>
-<h4>User Detail Page</h4>
-<br>
-Username : {{object.username}}
-<br>
-Email : {{object.email}}
-<br>
-timestamp : {{object.timestamp}}
-<br>
-last_login : {{object.last_login}}
-<br><br>
-First Name : {{object.first_name}}
-<br>
-Last Name : {{object.last_name}}
-<br><br>
+<section>
+	<div class="container">
+		<!-- General Information -->
+		<div class="add-listing-box translateY-60 edit-info mrg-bot-25 padd-bot-30 padd-top-25">
+			<div class="listing-box-header">
+				<div class="avater-box">
+				<img src="assets/img/avatar.jpg" class="img-responsive img-circle edit-avater" alt="" />
+				</div>
+				<h3>{{object.get_full_name}}</h3>
+				<p>{% if object.is_superuser %}Yöneticisi{% else %}Normal Kullanıcı{% endif %}</p>
+			</div>
+			<div class="row mrg-r-10 mrg-l-10 preview-info">
+				<div class="col-sm-6">
+					<label><i class="ti-mobile preview-icon call mrg-r-10"></i>91 258 574 5287</label>
+				</div>
+				<div class="col-sm-6">
+					<label><i class="ti-email preview-icon email mrg-r-10"></i> {{object.email}}</label>
+				</div>
+				<div class="col-sm-6">
+					<label><i class="ti-gift preview-icon birth mrg-r-10"></i>July 17 1990</label>
+				</div>
+				<div class="col-sm-6">
+					<label><i class="ti-world preview-icon web mrg-r-10"></i>Www.listinghub.com</label>
+				</div>
+			</div>
+		</div>
+		<!-- End General Information -->
+	</div>
+</section>
 
+
+<!--
 <a href="{% url 'users:user_delete' object.username %}">Delete</a>
 <br>
+-->
 <a href="{% url 'users:user_update' object.username %}">Update</a>
 <br>
 <a href="{% url 'users:logout' %}">Logout</a>
