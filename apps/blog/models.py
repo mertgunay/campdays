@@ -1,15 +1,25 @@
-from django.db import models
+#from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.db import models
+from utils.slugify import unique_slug_generator_for_blog
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+
+User = get_user_model()
 
 # Create your models here.
 
 def upload_location(instance, filename):
     #filebase, extension = filename.split(".")
-    return "%s/%s" %(instance.title, filename)
+    #return "%s/%s.%s" %(instance.id, instance.id, extension)
+    return "%s/%s" %(instance.id, filename)
 
 class Post(models.Model):
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
     image = models.ImageField(upload_to=upload_location,
             null=True,
             blank=True,
@@ -28,8 +38,13 @@ class Post(models.Model):
         return self.title
 
     def get_absolut_url(self):
-        return reverse("blog:blog_detail", kwargs={"id": self.id})
+        return reverse("blog:blog_detail", kwargs={"slug": self.slug})
         #return "/blog/%s/" %(self.id)
 
     class Meta:
         ordering = ["-timestampt", "-updated"]
+
+@receiver(pre_save, sender=Post)
+def user_pre_save_receiver(sender, instance, *args, **kwargs):
+		if not instance.slug:
+			instance.slug = unique_slug_generator_for_blog(instance)

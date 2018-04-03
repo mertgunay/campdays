@@ -20,6 +20,12 @@
     <div class="collapse navbar-collapse" id="navbar-menu">
 
       <ul class="nav navbar-nav navbar-center" data-in="fadeInDown" data-out="fadeOutUp">
+
+        <li><a href="{% url 'blog:list' %}">Blog</a></li>
+
+      
+        <li><a  href="{% url 'campowner:pending_owners' %}">Admin Panel</a></li>
+
         {% if request.user.is_authenticated %}
           {% if request.user.is_superuser %}
             <li><a  href="{% url 'campowner:pending_owners' %}">Admin Panel</a></li>
@@ -35,6 +41,7 @@
             Hoşgeldin, {{request.user.username}}
           </a>
         </li>
+
         {% else %}
         <li class="no-pd">
           <a href="{% url 'users:login' %}" class="addlist">
