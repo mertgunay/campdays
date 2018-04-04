@@ -8,9 +8,24 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from accounts.managers import UserManager
+from utils.choices import GENDER_CHOICES
+
+def users_upload_location(instance, filename):
+	return "users/%s/%s" %(instance.username, filename)
 
 class User(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
+
+    image            = models.ImageField(upload_to=users_upload_location,
+        width_field ='width_field',
+        height_field='height_field',
+        null=True,
+        blank=True,
+    )
+    width_field     = models.PositiveIntegerField(default=0)
+    height_field    = models.PositiveIntegerField(default=0)
+    
+    gender		    = models.CharField(max_length=10, choices=GENDER_CHOICES)
 
     username        = models.CharField(
         _('username'),

@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-
-<form method="post">
+Şifre değiştirmek için <a href="{% url 'users:password_change' %}">Buraya</a> tıkla
+<br><br>
+<form method="post" enctype="multipart/form-data">
 {% csrf_token %}
 {{form.as_p}}
-<button type="submit" name="button">Update</button>
+<button type="submit" class="btn btn-default" name="button">Update</button>
 </form>
 
 {% endblock content %}

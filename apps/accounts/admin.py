@@ -40,6 +40,10 @@ class UserAdmin(BaseUserAdmin):
             'fields': (
                 'first_name',
                 'last_name',
+                'gender',
+                'image',
+                'width_field',
+                'height_field'
             )
         }),
 
