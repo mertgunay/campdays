@@ -7,10 +7,17 @@
 		<div class="add-listing-box translateY-60 edit-info mrg-bot-25 padd-bot-30 padd-top-25">
 			<div class="listing-box-header">
 				<div class="avater-box">
-				<img src="assets/img/avatar.jpg" class="img-responsive img-circle edit-avater" alt="" />
+					{% if object.image %}
+						<img src="{{object.image.url}}" class="img-responsive img-circle edit-avater" alt="" />
+					{% endif %}
 				</div>
 				<h3>{{object.get_full_name}}</h3>
 				<p>{% if object.is_superuser %}Yöneticisi{% else %}Normal Kullanıcı{% endif %}</p>
+				<p>
+					{% if request.user == object %}
+					<a href="{% url 'users:user_update' object.username %}">Profili Güncelle</a>
+					{% endif %}
+				</p>
 			</div>
 			<div class="row mrg-r-10 mrg-l-10 preview-info">
 				<div class="col-sm-6">
@@ -26,9 +33,15 @@
 					<label><i class="ti-world preview-icon web mrg-r-10"></i>Www.listinghub.com</label>
 				</div>
 			</div>
+
+			<br>
+			<a href="{% url 'users:logout' %}">Logout</a>
+			<br>
+			
 		</div>
 		<!-- End General Information -->
 	</div>
+
 </section>
 
 
@@ -36,11 +49,6 @@
 <a href="{% url 'users:user_delete' object.username %}">Delete</a>
 <br>
 -->
-<a href="{% url 'users:user_update' object.username %}">Update</a>
-<br>
-<a href="{% url 'users:logout' %}">Logout</a>
-<br>
-<a href="{% url 'users:password_change' %}">Change Password</a>
-<br>
+
 
 {% endblock content %}
