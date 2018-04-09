@@ -39,12 +39,16 @@ class UserUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
     model = User
     template_name = 'accounts/user_update.html'
     fields = [
+        'image',
         'first_name',
         'last_name',
+        'email',
+        'gender',
     ]
 
     def get_object(self, *args, **kwargs):
         username = self.kwargs.get('username')
+        print(username)
         instance = get_object_or_404(User, username=username)
         return instance
 
