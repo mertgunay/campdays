@@ -7,9 +7,7 @@
 		<div class="add-listing-box translateY-60 edit-info mrg-bot-25 padd-bot-30 padd-top-25">
 			<div class="listing-box-header">
 				<div class="avater-box">
-					{% if object.image %}
-						<img src="{{object.image.url}}" class="img-responsive img-circle edit-avater" alt="" />
-					{% endif %}
+						<img src="{{object.get_image_url}}" class="img-responsive img-circle edit-avater" alt="" />
 				</div>
 				<h3>{{object.get_full_name}}</h3>
 				<p>{% if object.is_superuser %}Yöneticisi{% else %}Normal Kullanıcı{% endif %}</p>
@@ -37,7 +35,7 @@
 			<br>
 			<a href="{% url 'users:logout' %}">Logout</a>
 			<br>
-			
+
 		</div>
 		<!-- End General Information -->
 	</div>
