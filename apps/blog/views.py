@@ -30,11 +30,14 @@ def blog_create(request):
 def blog_detail(request, slug):
 
     instance = get_object_or_404(Post, slug=slug)
+    last_posts = Post.objects.all().order_by('-timestampt')[:5]
+    print(last_posts)
     share_string = quote(instance.content)
     context = {
         "title": instance.title,
         "instance": instance,
         "share_string": share_string,
+        "last_posts": last_posts,
     }
 
     return render(request, "post_detail.html", context)
@@ -95,6 +98,7 @@ def blog_update(request, slug):
 def blog_delete(request, slug):
 
     instance = get_object_or_404(Post, slug=slug)
+    template_name = 'blog/post_delete.html'
     instance.delete()
     messages.error(request, "Post Deleted")
     return redirect("blog:list")
