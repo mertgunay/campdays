@@ -31,7 +31,7 @@
           <div class="blog-grid-box-content">
             <div class="blog-avatar text-center">
 
-              <img src="{% if obj.user.image %}{{obj.user.image.url}}{% endif %}" class="img-responsive" alt=""/>
+              <img src="{{obj.user.get_image_url}}" class="img-responsive" alt=""/>
 
               <img src="" class="img-responsive" alt=""/>
 

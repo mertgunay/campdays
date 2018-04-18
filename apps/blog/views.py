@@ -2,9 +2,11 @@ from urllib.parse import quote
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.contrib import messages
 
+from comment.models import Comment
 from .forms import PostForm
 from .models import Post
 from django.contrib.auth.decorators import login_required
@@ -33,11 +35,17 @@ def blog_detail(request, slug):
     last_posts = Post.objects.all().order_by('-timestampt')[:5]
     print(last_posts)
     share_string = quote(instance.content)
+
+    content_type = ContentType.objects.get_for_model(Post)
+    obj_id = instance.id
+    comments = Comment.objects.filter(content_type=content_type, object_id=obj_id)
+    print(comments)
     context = {
         "title": instance.title,
         "instance": instance,
         "share_string": share_string,
         "last_posts": last_posts,
+        "comments": comments,
     }
 
     return render(request, "post_detail.html", context)
