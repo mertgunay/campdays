@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if self.request.user.campowner %}
+{% if not request.user.campowner %}
 
 <section class="log-wrapper" enctype="multipart/form-data">
 	<div class="container">

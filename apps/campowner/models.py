@@ -11,23 +11,24 @@ def campowner_upload_location(instance, filename):
 	return "campowners/%s/%s" %(instance.slug, filename)
 
 class CampOwner(models.Model):
-    user            = models.OneToOneField(User, on_delete=models.CASCADE)
-    name            = models.CharField(max_length=50)
-    slug            = models.SlugField(unique=True, blank=True)
-    address         = models.CharField(max_length=255)
-    image           = models.ImageField(
-        upload_to=campowner_upload_location,
-        width_field='width_field',
-        height_field='height_field',
-        null=True,
-        blank=True,
-    )
-    width_field     = models.PositiveIntegerField(default=0)
-    height_field    = models.PositiveIntegerField(default=0)
-    is_active       = models.BooleanField(default=False)
+	user            = models.OneToOneField(User, on_delete=models.CASCADE)
+	name            = models.CharField(max_length=50)
+	slug            = models.SlugField(unique=True, blank=True)
+	address         = models.CharField(max_length=255)
+	image           = models.ImageField(
+	    upload_to=campowner_upload_location,
+	    width_field='width_field',
+	    height_field='height_field',
+	    null=True,
+	    blank=True,
+	)
+	width_field     = models.PositiveIntegerField(default=0)
+	height_field    = models.PositiveIntegerField(default=0)
+	is_active       = models.BooleanField(default=False)
+	is_pending 		= models.BooleanField(default=True)
 
-    def __str__(self):
-    	return self.name
+	def __str__(self):
+		return self.name
 
 @receiver(pre_save, sender=CampOwner)
 def campowner_pre_save_receiver(sender, instance, *args, **kwargs):

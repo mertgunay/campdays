@@ -25,7 +25,19 @@
 
         {% if request.user.is_authenticated %}
           {% if request.user.is_superuser %}
-            <li><a  href="{% url 'campowner:pending_owners' %}">Admin Panel</a></li>
+          <li>   <a class="dropdown-toggle"
+            href="#"
+           id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+           Admin Panel</a>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <li><a href="{% url 'campowner:pending_owners' %}">*Bekleyen İstekler</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="{% url 'ban:stat' %}">*İstatistik</a></li>
+              <li role="separator" class="divider"></li>
+            </ul>
+          </li>
+
           {% endif %}
         {% endif %}
 
