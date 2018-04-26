@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('superuser/', include('campowner.urls')),
     path('blog/', include('blog.urls')),
+    path('ban/', include('ban.urls')),
 ]
 
 if settings.DEBUG:

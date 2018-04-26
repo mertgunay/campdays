@@ -18,8 +18,13 @@
 				  {% endfor %}
           <button type="submit" class="btn theme-btn width-200 btn-radius" name="button">Üye Ol</button>
 				</form>
+				<p>
+					Zaten bir üyeliğe sahipsen, <a href="{% url 'users:login' %}"><b>Buraya Tıkla</b> </a>
+				</p>
+				</div>
 			</div>
-		</div>
 	</div>
+
+
 </section>
 {% endblock content %}
