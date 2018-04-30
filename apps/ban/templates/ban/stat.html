@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if banned_users %}
+
+<b>Banlı Kullanıcılar</b>:
+<br>
+<ul>
+{% for ban in banned_users %}
+  <li>{{ban.user.get_full_name}}</li>
+{% endfor %}
+</ul>
+{% else %}
+Banlı kullanıcı yok
+{% endif %}
+
+
+{% endblock content %}
