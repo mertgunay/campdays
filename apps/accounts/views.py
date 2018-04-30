@@ -1,6 +1,7 @@
 from django.contrib.auth import login, authenticate, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
 from django.views.generic import (
     CreateView,
     DetailView,
@@ -61,3 +62,25 @@ class UserDeleteView(LoginRequiredMixin, OwnerRequiredMixin, DeleteView):
         username = self.kwargs.get('username')
         instance = get_object_or_404(User, username=username)
         return instance
+
+def validate_username(request):
+    data = {'error': False}
+    if request.is_ajax():
+        username = request.POST.get("username")
+        if len(username) < 6 or len(username) > 30:
+            data["error"] = "Kullanıcı adı en az 6 en çok 30 karakter içerlemidir"
+        elif User.objects.filter(username__iexact=username).exists():
+            data["error"] = "Kullanıcı adı mevcut"
+    else:
+        data["error"] = "This request is not ajax"
+    return JsonResponse(data)
+
+def validate_email(request):
+    data = {'error': False}
+    if request.is_ajax():
+        email = request.POST.get("email")
+        if User.objects.filter(email=email).exists():
+            data['error'] = "Bu email adresi kullanımda"
+    else:
+        data["error"] = "This request is not ajax"
+    return JsonResponse(data)
