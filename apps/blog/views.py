@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.contrib import messages
 
 from comment.models import Comment
+from comment.forms import CommentForm
 from .forms import PostForm
 from .models import Post
 from django.contrib.auth.decorators import login_required
@@ -36,16 +37,30 @@ def blog_detail(request, slug):
     print(last_posts)
     share_string = quote(instance.content)
 
-    content_type = ContentType.objects.get_for_model(Post)
-    obj_id = instance.id
-    comments = Comment.objects.filter(content_type=content_type, object_id=obj_id)
-    print(comments)
+    #content_type = ContentType.objects.get_for_model(Post)
+    comments = Comment.objects.filter_by_instance(instance)
+    #Comment.objects.filter(post=instance)
+    #instance.comments
+
+        #content_type = ContentType.objects.get_for_model(instance.__class__)
+
+
+    initial_data = {
+        "content_type": instance.get_content_type,
+        "object_id": instance.id,
+    }
+
+    comment_form = CommentForm(request.POST or None, initial=initial_data)
+    if comment_form.is_valid():
+        print(comment_form.cleaned_data)
+
     context = {
         "title": instance.title,
         "instance": instance,
         "share_string": share_string,
         "last_posts": last_posts,
         "comments": comments,
+        "comment_form": comment_form,
     }
 
     return render(request, "post_detail.html", context)
