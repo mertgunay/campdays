@@ -92,7 +92,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	    verbose_name_plural = _('users')
 
 	def __str__(self):
-	    return self.email
+	    return self.get_full_name()
 
 	def get_absolute_url(self):
 	    return reverse('users:user_detail', kwargs={'username': self.username})

@@ -65,18 +65,20 @@
 								<div class="col-md-12 col-sm-12">
 									<div class="comments">
 										<div class="comments-title">
-											<h4>Comments (2)</h4>
+											<h4>Comments</h4>
 										</div>
 
 										<!-- Single Comment -->
 										<div class="single-comment">
+											{% for comment in comments %}
+
 											<div class="img-holder">
-												<img src="assets/img/user-1.png" class="img-responsive" alt="">
+												<img src="{{user.get_image_url}}" class="img-responsive" alt=""/>
 											</div>
 											<div class="text-holder">
 												<div class="top">
 													<div class="name pull-left">
-														<h4>Robert Mil</h4>
+														<h4> {{comment.user.get_full_name}} </h4>
 													</div>
 													<div class="rating pull-right">
 														<ul>
@@ -90,11 +92,12 @@
 												</div>
 
 												<div class="text">
-													<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+													<p> {{ comment.content }} </p>
 												</div>
 
-												<span class="small">Dec 30 2017</span>
+												<span class="small">{{comment.timestamp}}</span>
 											</div>
+											{% endfor %}
 										</div>
 
 										<!-- Single Comment -->
@@ -158,8 +161,8 @@
 
 									</div>
 								</div>
-							</div>
-							<!-- /.User Comments -->
+
+							<!--/.User Comments -->
 
 							<!-- Start Blog Comment -->
 							<div class="row">
@@ -232,61 +235,24 @@
 									<div class="widget-boxed-body padd-top-5">
 										<div class="side-list">
 											<ul class="side-blog-list">
-												<li>
-													<a href="#">
-														<div class="blog-list-img">
-															<img src="assets/img/image-3.jpg" class="img-responsive" alt="">
-														</div>
-													</a>
-													<div class="blog-list-info">
-														<h5><a href="#" title="blog">Freel Documentry</a></h5>
-														<div class="blog-post-meta">
-															<span class="updated">Nov 26, 2017</span> | <a href="#" rel="tag">Documentry</a>
-														</div>
-													</div>
-												</li>
+
+												{% for l_post in last_posts %}
 
 												<li>
 													<a href="#">
 														<div class="blog-list-img">
-															<img src="assets/img/image-4.jpg" class="img-responsive" alt="">
+															<img src="{{l_post.image.url}}" class="img-responsive" alt="">
 														</div>
 													</a>
 													<div class="blog-list-info">
-														<h5><a href="#" title="blog">Preez Food Rock</a></h5>
+														<h5><a href="{{l_post.get_absolut_url}}" title="blog">{{l_post.title}}</a></h5>
 														<div class="blog-post-meta">
-															<span class="updated">Oct 10, 2017</span> | <a href="#" rel="tag">Food</a>
+															<span class="updated">{{l_post.timestampt}}</span>
 														</div>
 													</div>
 												</li>
 
-												<li>
-													<a href="#">
-														<div class="blog-list-img">
-															<img src="assets/img/image-1.jpg" class="img-responsive" alt="">
-														</div>
-													</a>
-													<div class="blog-list-info">
-														<h5><a href="#" title="blog">Cricket Buzz High</a></h5>
-														<div class="blog-post-meta">
-															<span class="updated">Oct 07, 2017</span> | <a href="#" rel="tag">Sport</a>
-														</div>
-													</div>
-												</li>
-
-												<li>
-													<a href="#">
-														<div class="blog-list-img">
-															<img src="assets/img/image-5.jpg" class="img-responsive" alt="">
-														</div>
-													</a>
-													<div class="blog-list-info">
-														<h5><a href="#" title="blog">Tour travel Tick</a></h5>
-														<div class="blog-post-meta">
-															<span class="updated">Sep 27, 2017</span> | <a href="#" rel="tag">Travel</a>
-														</div>
-													</div>
-												</li>
+											{% endfor %}
 
 											</ul>
 										</div>
@@ -294,7 +260,7 @@
 								</div>
 								<!-- End: Latest Blogs -->
 
-								<!-- Start: Listing Category -->
+								<!-- Start: Listing Category
 								<div class="widget-boxed">
 									<div class="widget-boxed-header">
 										<h4><i class="ti-briefcase padd-r-10"></i>Top Categories</h4>
@@ -313,7 +279,7 @@
 										</div>
 									</div>
 								</div>
-								<!-- End: Listing Category -->
+								End: Listing Category -->
 
 								<!-- Start: Recent Listing -->
 								<div class="widget-boxed">
