@@ -25,7 +25,7 @@
 
 									<!-- Featured Image -->
 									<figure class="img-holder">
-                    {% if instance.image %}
+                    {% if instance.image.url %}
 										<a href="blog-detail.html"><img src="{{instance.image.url}}" class="img-responsive" alt="News"></a>
                     {% endif %}
                     <div class="blog-post-date theme-bg">
@@ -65,20 +65,19 @@
 								<div class="col-md-12 col-sm-12">
 									<div class="comments">
 										<div class="comments-title">
-											<h4>Comments</h4>
+											<h4>Comments (2)</h4>
 										</div>
 
 										<!-- Single Comment -->
 										<div class="single-comment">
-											{% for comment in comments %}
-
+												{% for comment in comments %}
 											<div class="img-holder">
-												<img src="{{user.get_image_url}}" class="img-responsive" alt=""/>
+											<img src="{{comment.user.get_image_url}}" class="img-responsive" alt=""/>
 											</div>
 											<div class="text-holder">
 												<div class="top">
 													<div class="name pull-left">
-														<h4> {{comment.user.get_full_name}} </h4>
+														<h4>{{comment.user.get_full_name}}</h4>
 													</div>
 													<div class="rating pull-right">
 														<ul>
@@ -92,7 +91,7 @@
 												</div>
 
 												<div class="text">
-													<p> {{ comment.content }} </p>
+													<p>{{ comment.content }}</p>
 												</div>
 
 												<span class="small">{{comment.timestamp}}</span>
@@ -161,8 +160,8 @@
 
 									</div>
 								</div>
-
-							<!--/.User Comments -->
+							</div>
+							<!-- /.User Comments -->
 
 							<!-- Start Blog Comment -->
 							<div class="row">
