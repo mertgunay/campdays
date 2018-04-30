@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'accounts.apps.AccountsConfig',
     'campowner.apps.CampownerConfig',
+    'comment.apps.CommentConfig',
+    'ban.apps.BanConfig',
 ]
 
 MIDDLEWARE = [

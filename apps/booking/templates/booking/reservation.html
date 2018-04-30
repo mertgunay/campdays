@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<form>
+<style>
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align center;
+}
+</style>
+
+
+<h2>Make a reservation</h2>
+
+<table style="width:50%">
+  <tr>
+    <th>Check-in: <input type="date" name="check_in"></th>
+    <th>Check-out: <input type="date" name="check_out"></th>
+  </tr>
+  <tr>
+    <td>Oda Tipi-1:</td>
+    <td><input type="radio" name="oda-tipi" value="1" checked> Book</td>
+  </tr>
+  <tr>
+    <td>Oda Tipi-2:</td>
+    <td><input type="radio" name="oda-tipi" value="2" checked> Book</td>
+  </tr>
+  <tr>
+    <td>Oda Tipi-3:</td>
+    <td><input type="radio" name="oda-tipi" value="3" checked> Book</td>
+  </tr>
+</table>
+
+
+
+ <br><input type="button" onclick="alert('Reservation Completed')" value="Book!">
+</form>
+
+
+{% endblock content %}
