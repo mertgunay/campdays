@@ -23,12 +23,17 @@ class UserRegisterForm(forms.ModelForm):
             'placeholder': 'Şifre',
         })
 
+        self.fields['gender'].widget.attrs.update({
+            'class' : 'form-control',
+        })
+
     class Meta:
         model = User
         fields = {
             'username',
             'email',
             'password',
+            'gender',
         }
 
         widgets = {

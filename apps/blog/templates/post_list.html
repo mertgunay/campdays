@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<section >
+
+  <div class="container">
+    <div class="widget-boxed-body padd-top-5">
+      <form method="GET" action="">
+      <div class="input-group">
+          <input type="text" name="q" class="form-control" value="{{ request.GET.q }}" placeholder="Search…"/>
+          <span class="input-group-btn">
+            <button type="submit" class="btn height-50 theme-btn">Go</button>
+          </span>
+      </div>
+      </form>
+    </div>
+
+    <div class="row">
+
+      {% for obj in object_list %}
+      <div class="col-md-4 col-sm-6">
+        <div class="blog-box blog-grid-box">
+          <div class="blog-grid-box-img">
+
+            <img src="{% if obj.image %}{{obj.image.url}}{% endif %}" class="img-responsive" alt=""/>
+
+          </div>
+
+          <div class="blog-grid-box-content">
+            <div class="blog-avatar text-center">
+
+              <img src="{{obj.user.get_image_url}}" class="img-responsive" alt=""/>
+
+              <img src="" class="img-responsive" alt=""/>
+
+              <p> <span class="theme-cl">{{ obj.user.get_full_name }}</span><strong> Kişi tarafından</strong></p>
+            </div>
+            <h4>{{ obj.title }} <small> {{ obj.timestampt | timesince }} önce</small></h4>
+            <p>{{ obj.content | linebreaks | truncatechars:120 }}</p>
+            <a href="{{ obj.get_absolut_url }}" class="btn btn-primary" role="button">Daha Fazla</a>
+          </div>
+
+        </div>
+      </div>
+      {% endfor %}
+
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="bs-example">
+          <ul class="pagination">
+            <li>
+              {% if object_list.has_previous %}
+                  <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">«</a>
+              {% else %}
+                <a href="#">«</a>
+              {% endif %}
+            </li>
+            {% for page in object_list.paginator.page_range %}
+              <li><a href="?page={{ page }}">{{ page }}</a></li>
+            {% endfor %}
+
+            <li>
+              {% if object_list.has_next %}
+                  <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">»</a>
+              {% else %}
+              <a href="#">»</a>
+              {% endif %}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock content %}
