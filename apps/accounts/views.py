@@ -43,8 +43,7 @@ class UserUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
         'image',
         'first_name',
         'last_name',
-        'email',
-        'gender',
+        
     ]
 
     def get_object(self, *args, **kwargs):
