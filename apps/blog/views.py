@@ -37,6 +37,7 @@ def blog_detail(request, slug):
     print(last_posts)
     share_string = quote(instance.content)
 
+
     #content_type = ContentType.objects.get_for_model(Post)
     comments = Comment.objects.filter_by_instance(instance)
     #Comment.objects.filter(post=instance)
@@ -52,7 +53,20 @@ def blog_detail(request, slug):
 
     comment_form = CommentForm(request.POST or None, initial=initial_data)
     if comment_form.is_valid():
-        print(comment_form.cleaned_data)
+        c_type = comment_form.cleaned_data.get("content_type")
+        content_type = ContentType.objects.get(model=c_type)
+        obj_id = comment_form.cleaned_data.get("obj_id")
+        content_data = form.cleaned_data.get("content")
+        new_comment, created = Comment.objects.get_or_create(
+                                    user = request.user,
+                                    content_type = content_type,
+                                    object_id = obj_id,
+                                    content = content_data
+                                    )
+        if created:
+            print("HANIN")
+
+    #comments = instance.comment
 
     context = {
         "title": instance.title,
