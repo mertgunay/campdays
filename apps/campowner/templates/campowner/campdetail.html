@@ -5,14 +5,31 @@
   <a class="btn btn-primary" href="{% url 'blog:create' %}" >Yeni Blog Oluştur</a>
   <br><br>
 
-  {{campowner.name}} <br><br><br>
-
+  {{campowner.name}} <br>
+  <form class="" action="{% url 'users:campowner_follow' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="campowner.id" value="
+    {% if campowner.id %}
+      {{campowner.id}}
+    {% else %}
+    {% endif %}
+    ">
+    {% if request.user in request.user.userprofile.followers.all%}
+    <button type="submit" class="btn btn-danger">Takibi bırak</button>
+    {% else %}
+    <button type="submit" class="btn btn-success">Takip Et</button>
+    {% endif %}
+  </form>
+    <!-- FOLLOW TOGGLE BUTTON END -->
+    <br><br>
   Blog
 
   <section >
 
     <div class="container">
       <div class="widget-boxed-body padd-top-5">
+
+        <!-- FOLLOW TOGGLE BUTTON -->
 
       </div>
 

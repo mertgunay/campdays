@@ -16,6 +16,7 @@ from accounts.views import (
     UserDetailView,
     UserUpdateView,
     UserDeleteView,
+    CampOwnerFollowToggle,
     # Validation URLS
     validate_username,
     validate_email,
@@ -27,6 +28,7 @@ user_patterns = [
     path('<username>/', UserDetailView.as_view(), name='user_detail'),
     path('<username>/update/', UserUpdateView.as_view(), name='user_update'),
     path('<username>/delete/', UserDeleteView.as_view(), name='user_delete'),
+    path('follow', CampOwnerFollowToggle.as_view(), name='campowner_follow')
 ]
 
 validate_patterns = [
