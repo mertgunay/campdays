@@ -177,65 +177,29 @@
 											<h4>Leave a Reply</h4>
 										</div>
 
-										{{ comment_form }}
-
-
-										<form>
-											<div class="col-md-6 col-sm-6">
-												<input type="text" class="form-control" placeholder="Your Name">
-											</div>
-
-											<div class="col-md-6 col-sm-6">
-												<input type="email" class="form-control" placeholder="Your Email">
-											</div>
-
-											<div class="col-md-6 col-sm-6">
-												<input type="text" class="form-control" placeholder="Your Mobile">
-											</div>
-
-											<div class="col-md-6 col-sm-6">
-												<input type="text" class="form-control" placeholder="Subject">
-											</div>
-
-											<div class="col-md-12 col-sm-12">
-												<textarea class="form-control" placeholder="Comment"></textarea>
-											</div>
+										{% if request.user.is_authenticated %}
+										<form method='post'>
+											{% csrf_token %}
+											{{ comment_form }}
 
 											<div class="col-md-12 col-sm-12">
 												<button class="btn theme-btn width-200" type="submit">submit now</button>
 											</div>
 										</form>
-
+										{% endif %}
 
 									</div>
 
 								</div>
 							</div>
 							<!-- End Blog Comment -->
-
 						</div>
 						<!-- /.col-md-8 -->
-
 						<!-- ===================== Blog Sidebar ==================== -->
 						<div class="col-md-4 col-sm-12">
 							<div class="sidebar">
 
-								<!-- Search Bar -->
-								<div class="widget-boxed">
-									<div class="widget-boxed-header border-0">
-										<h4><i class="ti-search padd-r-10"></i>Search Here</h4>
-									</div>
-
-									<div class="widget-boxed-body padd-top-5">
-										<div class="input-group">
-											<input type="text" class="form-control" placeholder="Search&hellip;">
-											<span class="input-group-btn">
-												<button type="button" class="btn height-50 theme-btn">Go</button>
-											</span>
-										</div>
-									</div>
-
-								</div>
+								
 
 								<!-- Start: Latest Blogs -->
 								<div class="widget-boxed">
@@ -291,75 +255,6 @@
 								</div>
 								End: Listing Category -->
 
-								<!-- Start: Recent Listing -->
-								<div class="widget-boxed">
-									<div class="widget-boxed-header">
-										<h4><i class="ti-check-box padd-r-10"></i>Recent Blogs</h4>
-									</div>
-									<div class="widget-boxed-body padd-top-5">
-										<div class="side-list">
-											<ul class="side-blog-list">
-												<li>
-													<a href="#">
-														<div class="blog-list-img">
-															<img src="assets/img/image-3.jpg" class="img-responsive" alt="">
-														</div>
-													</a>
-													<div class="blog-list-info">
-														<h5><a href="#" title="blog">Freel Documentry</a></h5>
-														<div class="blog-post-meta">
-															<span class="updated">Nov 26, 2017</span> | <a href="#" rel="tag">Documentry</a>
-														</div>
-													</div>
-												</li>
-
-												<li>
-													<a href="#">
-														<div class="blog-list-img">
-															<img src="assets/img/image-4.jpg" class="img-responsive" alt="">
-														</div>
-													</a>
-													<div class="blog-list-info">
-														<h5><a href="#" title="blog">Preez Food Rock</a></h5>
-														<div class="blog-post-meta">
-															<span class="updated">Oct 10, 2017</span> | <a href="#" rel="tag">Food</a>
-														</div>
-													</div>
-												</li>
-
-												<li>
-													<a href="#">
-														<div class="blog-list-img">
-															<img src="assets/img/image-1.jpg" class="img-responsive" alt="">
-														</div>
-													</a>
-													<div class="blog-list-info">
-														<h5><a href="#" title="blog">Cricket Buzz High</a></h5>
-														<div class="blog-post-meta">
-															<span class="updated">Oct 07, 2017</span> | <a href="#" rel="tag">Sport</a>
-														</div>
-													</div>
-												</li>
-
-												<li>
-													<a href="#">
-														<div class="blog-list-img">
-															<img src="assets/img/image-5.jpg" class="img-responsive" alt="">
-														</div>
-													</a>
-													<div class="blog-list-info">
-														<h5><a href="#" title="blog">Tour travel Tick</a></h5>
-														<div class="blog-post-meta">
-															<span class="updated">Sep 27, 2017</span> | <a href="#" rel="tag">Travel</a>
-														</div>
-													</div>
-												</li>
-
-											</ul>
-										</div>
-									</div>
-								</div>
-								<!-- End: Recent Listing -->
 
 							</div>
 						</div>

@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.contrib import messages
 
+from campowner.models import CampOwner
 from comment.models import Comment
 from comment.forms import CommentForm
 from .forms import PostForm
@@ -16,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required()
 def blog_create(request):
-
+    camp_owner = get_object_or_404(CampOwner, user=request.user)
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -28,13 +29,12 @@ def blog_create(request):
     context = {
         "form": form,
     }
-    return render(request, "post_form.html", context)
+    return render(request, "post_create.html", context)
 
 def blog_detail(request, slug):
 
     instance = get_object_or_404(Post, slug=slug)
     last_posts = Post.objects.all().order_by('-timestampt')[:5]
-    print(last_posts)
     share_string = quote(instance.content)
 
 
@@ -43,28 +43,20 @@ def blog_detail(request, slug):
     #Comment.objects.filter(post=instance)
     #instance.comments
 
-        #content_type = ContentType.objects.get_for_model(instance.__class__)
-
+    #content_type = ContentType.objects.get_for_model(instance.__class__)
 
     initial_data = {
-        "content_type": instance.get_content_type,
         "object_id": instance.id,
+        "content_type": 'post',
     }
 
-    comment_form = CommentForm(request.POST or None, initial=initial_data)
-    if comment_form.is_valid():
-        c_type = comment_form.cleaned_data.get("content_type")
-        content_type = ContentType.objects.get(model=c_type)
-        obj_id = comment_form.cleaned_data.get("obj_id")
-        content_data = form.cleaned_data.get("content")
-        new_comment, created = Comment.objects.get_or_create(
-                                    user = request.user,
-                                    content_type = content_type,
-                                    object_id = obj_id,
-                                    content = content_data
-                                    )
-        if created:
-            print("HANIN")
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=True)
+            print(comment)
+    else:
+        comment_form = CommentForm(initial=initial_data)
 
     #comments = instance.comment
 
@@ -125,6 +117,7 @@ def blog_update(request, slug):
         return HttpResponseRedirect(instance.get_absolut_url())
 
     context = {
+        "slug": instance.slug,
         "title": instance.title,
         "instance": instance,
         "form": form,
