@@ -1,13 +1,41 @@
 {% extends "base.html" %}
+
 {% block content %}
 
-  <h3>Takip ettiğin kullanıcıların blogları : </h3><br>
-  {% if blogs %}
+  <a class="btn btn-primary" href="{% url 'blog:create' %}" >Yeni Blog Oluştur</a>
+  <br><br>
+
+  {{campowner.name}} <br>
+  <form class="" action="{% url 'users:campowner_follow' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="campowner.id" value="
+    {% if campowner.id %}
+      {{campowner.id}}
+    {% else %}
+    {% endif %}
+    ">
+    {% if request.user in campowner.followers.all %}
+    <button type="submit" class="btn btn-danger">Takibi bırak</button>
+    {% else %}
+    <button type="submit" class="btn btn-success">Takip Et</button>
+    {% endif %}
+  </form>
+    <!-- FOLLOW TOGGLE BUTTON END -->
+    <br><br>
+  Blog
+
   <section >
 
     <div class="container">
+      <div class="widget-boxed-body padd-top-5">
+
+        <!-- FOLLOW TOGGLE BUTTON -->
+
+      </div>
+
       <div class="row">
-        {% for obj in blogs %}
+
+        {% for obj in object_list %}
         <div class="col-md-4 col-sm-6">
           <div class="blog-box blog-grid-box">
             <div class="blog-grid-box-img">
@@ -28,17 +56,22 @@
               <h4>{{ obj.title }} <small> {{ obj.timestampt | timesince }} önce</small></h4>
               <p>{{ obj.content | linebreaks | truncatechars:120 }}</p>
               <a href="{{ obj.get_absolut_url }}" class="btn btn-primary" role="button">Daha Fazla</a>
+
+              {% if request.user.campowner == campowner %}<br><br>
+                <a href="{% url 'blog:blog_update' obj.slug %}" class="btn btn-primary" role="button">Düzenle</a>
+              {% endif %}
             </div>
 
           </div>
         </div>
         {% endfor %}
+
+
       </div>
+
+
+
     </div>
   </section>
-  {% else %}
-    Görünürde bir blog yok
-  {% endif %}
-
 
 {% endblock content %}
