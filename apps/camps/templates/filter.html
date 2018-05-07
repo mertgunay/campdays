@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geolocation</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+   
+      #map {
+        height: 50%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+        <div id="floating-panel">
+                <input id="submit" type="button" value="Find My Location">
+              </div>
+    <div id="map"></div>
+    <script>
+      var map, infoWindow, marker;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 38.200, lng: 28.639550},
+          zoom: 6
+        });
+        marker = new google.maps.Marker({
+          map: map,
+          position: map.center,
+          });
+        infoWindow = new google.maps.InfoWindow;
+        document.getElementById('submit').addEventListener('click', function() {
+            if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+        alert("Geolocation is not supported by this browser.");
+        }  
+        });
+        
+        //called by FindMyLoc btn to set pin on current location
+        function showPosition(position) {
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        map.setCenter(new google.maps.LatLng(lat, lng));
+        marker.position = map.center;
+        marker.setPosition(map.center);
+        }
+}
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHbsHWZkLuYDZeEF3zp8Yq_djqNzM_aTM&callback=initMap">
+    </script>
+  </body>
+</html>
