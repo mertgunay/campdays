@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block css_ext %}
+
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+
+{% endblock css_ext %}
+
+{% block content %}
+
+  <table>
+    <tr>
+      <th>Kullanıcı</th>
+      <th>Açıklama</th>
+      <th></th>
+    </tr>
+    {% for user in object_list %}
+    <form action="{% url 'users:ban_user' %}" method="post">
+    <tr>
+      <td>{{user.username}}</td>
+      <td>
+        {% if not user.is_active %}
+          {% for ban in user.banneduser_set.all %}
+            {{ban.desc}}
+          {% endfor %}
+        {% else %}
+          <input type="text" name="desc" value="">
+        {% endif %}
+      </td>
+      <td>
+        {% if user.is_active %}
+          {% csrf_token %}
+          <input type="hidden" name="user_id" value="{{user.id}}">
+          <button type="submit" name="button">Banla</button>
+        {% else %}
+          Zaten Banlı
+        {% endif %}
+      </td>
+    </tr>
+    </form>
+    {% endfor %}
+  </table>
+
+
+{% endblock content %}
