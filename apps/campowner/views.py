@@ -43,7 +43,7 @@ def accept_or_reject(request):
 
 def campowner(request, pk=None):
     obj = get_object_or_404(CampOwner, pk=pk)
-    blogs = Post.objects.filter(user=request.user)
+    blogs = Post.objects.filter(user=obj.user)
     context = {
         'campowner': obj,
         'object_list': blogs,
