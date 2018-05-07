@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from campdays.views import home
 
+
 urlpatterns = [
     path('',home, name='home'),
     path('admin/', admin.site.urls),
@@ -26,6 +27,9 @@ urlpatterns = [
     path('superuser/', include('campowner.urls')),
     path('blog/', include('blog.urls')),
     path('ban/', include('ban.urls')),
+    path('camps/', include('camps.urls')),
+
+
 ]
 
 if settings.DEBUG:
