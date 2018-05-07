@@ -13,7 +13,7 @@ from django.views.generic import (
 
 from accounts.forms import UserRegisterForm
 from accounts.mixins import OwnerRequiredMixin
-from accounts.models import UserProfile
+from campowner.models import CampProfile
 from ban.models import BannedUser
 
 User = get_user_model()
@@ -68,14 +68,13 @@ class UserDeleteView(LoginRequiredMixin, OwnerRequiredMixin, DeleteView):
 
 class CampOwnerFollowToggle(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        user_to_toggle = request.POST.get("campowner.id")
-        user_profile = get_object_or_404(UserProfile, owner_id=user_to_toggle)
+        camp_to_toggle = request.POST.get("campowner.id")
+        camp_profile = get_object_or_404(CampProfile, owner_id=camp_to_toggle)
         user = request.user
-        print(user_profile.followers.all())
-        if user in user_profile.followers.all():
-            user_profile.followers.remove(user)
+        if user in camp_profile.followers.all():
+            camp_profile.followers.remove(user)
         else:
-            user_profile.followers.add(user)
+            camp_profile.followers.add(user)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 class AllUsers(LoginRequiredMixin, ListView):
