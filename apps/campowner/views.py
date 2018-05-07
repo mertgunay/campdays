@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import CreateView
 from campowner.forms import CampOwnerRegisterForm
 from campowner.models import CampOwner
+from blog.models import Post
 
 class CampOwnerCreateView(CreateView):
     template_name = 'accounts/registration/register_campowner.html'
@@ -38,4 +39,13 @@ def accept_or_reject(request):
             campowner.is_active = False
             campowner.is_pending = False
             campowner.save()
-    return HttpResponseRedirect("/superuser/pending_owners")
+    return HttpResponseRedirect("/campowner/pending_owners")
+
+def campowner(request, pk=None):
+    obj = get_object_or_404(CampOwner, pk=pk)
+    blogs = Post.objects.filter(user=request.user)
+    context = {
+        'campowner': obj,
+        'object_list': blogs,
+    }
+    return render(request, "campowner/campdetail.html", context)
