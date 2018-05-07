@@ -5,7 +5,6 @@ from django.contrib.auth.forms import AdminPasswordChangeForm
 from django.contrib.auth.models import Group
 
 from accounts.forms import UserAdminCreationForm, UserAdminChangeForm
-from accounts.models import UserProfile
 
 User = get_user_model()
 
@@ -61,4 +60,3 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ()
 
 admin.site.unregister(Group)
-admin.site.register(UserProfile)
