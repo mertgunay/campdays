@@ -11,10 +11,15 @@ from django.contrib.auth.views import (
 )
 
 from accounts.views import (
+    # Normal URLS
     UserCreateView,
     UserDetailView,
     UserUpdateView,
     UserDeleteView,
+    CampOwnerFollowToggle,
+    # Validation URLS
+    validate_username,
+    validate_email,
 )
 
 app_name = 'users'
@@ -23,6 +28,12 @@ user_patterns = [
     path('<username>/', UserDetailView.as_view(), name='user_detail'),
     path('<username>/update/', UserUpdateView.as_view(), name='user_update'),
     path('<username>/delete/', UserDeleteView.as_view(), name='user_delete'),
+    path('follow', CampOwnerFollowToggle.as_view(), name='campowner_follow')
+]
+
+validate_patterns = [
+    path('username/', validate_username, name="validate_username"),
+    path('email/', validate_email, name="validate_email"),
 ]
 
 urlpatterns = [
@@ -60,4 +71,5 @@ urlpatterns = [
         template_name='accounts/registration/password_reset_complete.html'),
         name='password_reset_complete'),
     path('users/', include(user_patterns)),
+    path('validate/', include(validate_patterns)),
 ]
