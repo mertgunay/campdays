@@ -6,7 +6,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.contrib import messages
 
+from campowner.models import CampOwner
 from comment.models import Comment
+from comment.forms import CommentForm
 from .forms import PostForm
 from .models import Post
 from django.contrib.auth.decorators import login_required
@@ -15,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required()
 def blog_create(request):
-
+    camp_owner = get_object_or_404(CampOwner, user=request.user)
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -27,25 +29,44 @@ def blog_create(request):
     context = {
         "form": form,
     }
-    return render(request, "post_form.html", context)
+    return render(request, "post_create.html", context)
 
 def blog_detail(request, slug):
 
     instance = get_object_or_404(Post, slug=slug)
     last_posts = Post.objects.all().order_by('-timestampt')[:5]
-    print(last_posts)
     share_string = quote(instance.content)
 
-    content_type = ContentType.objects.get_for_model(Post)
-    obj_id = instance.id
-    comments = Comment.objects.filter(content_type=content_type, object_id=obj_id)
-    print(comments)
+
+    #content_type = ContentType.objects.get_for_model(Post)
+    comments = Comment.objects.filter_by_instance(instance)
+    #Comment.objects.filter(post=instance)
+    #instance.comments
+
+    #content_type = ContentType.objects.get_for_model(instance.__class__)
+
+    initial_data = {
+        "object_id": instance.id,
+        "content_type": 'post',
+    }
+
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=True)
+            print(comment)
+    else:
+        comment_form = CommentForm(initial=initial_data)
+
+    #comments = instance.comment
+
     context = {
         "title": instance.title,
         "instance": instance,
         "share_string": share_string,
         "last_posts": last_posts,
         "comments": comments,
+        "comment_form": comment_form,
     }
 
     return render(request, "post_detail.html", context)
@@ -96,6 +117,7 @@ def blog_update(request, slug):
         return HttpResponseRedirect(instance.get_absolut_url())
 
     context = {
+        "slug": instance.slug,
         "title": instance.title,
         "instance": instance,
         "form": form,

@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create Camp Location</title>
+    {% load static %}
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+  
+      #map {
+        height: 50%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #description {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+      }
+
+      #infowindow-content .title {
+        font-weight: bold;
+      }
+
+      #infowindow-content {
+        display: none;
+      }
+
+      #map #infowindow-content {
+        display: inline;
+      }
+
+      .pac-card {
+        margin: 10px 10px 0 0;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        background-color: #fff;
+        font-family: Roboto;
+      }
+
+      #pac-container {
+        padding-bottom: 12px;
+        margin-right: 12px;
+      }
+
+      .pac-controls {
+        display: inline-block;
+        padding: 5px 11px;
+      }
+
+      .pac-controls label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+
+      #address {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+      }
+
+      #address:focus {
+        border-color: #4d90fe;
+      }
+
+      #title {
+        color: #fff;
+        background-color: #4d90fe;
+        font-size: 25px;
+        font-weight: 500;
+        padding: 6px 12px;
+      }
+      #target {
+        width: 345px;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  {% block body %}
+  <body>
+    <div id="floating-panel">
+      <input id="address" class="controls" type="text" value="Kaş, Antalya">
+      <input id="submit" type="button" value="Choose">
+    </div>
+    <div id="map"></div>
+    <div id="panel">
+        {% block content %}
+        <form  method="post"  action=""> {% csrf_token %}
+            
+           {{ form.lat }}
+           {{ form.lng }}
+           {{ form.name }}
+           {{ form.title }}
+           {{ form.description }}
+           <input id="lonlat" value="Kaş, Antalya" hidden>
+           
+            <button style="margin: 50px; background-color:rgb(255, 255, 60); color: rgb(136, 117, 117); font-size:25px;" class="submit" > Create Location</button>    
+        </form>
+        {% endblock %}
+    </div>
+    <script>
+      function initMap() {
+        var tmpMarkerPosition = new google.maps.LatLng(36.200,29.639550);
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: {lat: 36.200, lng: 29.639550}
+        });
+        var geocoder = new google.maps.Geocoder();
+        marker = new google.maps.Marker({
+          map: map,
+          position: tmpMarkerPosition,
+          draggable: true
+          });
+          locationParser()
+          google.maps.event.addListener(marker, 'dragend', function() {
+            geocodePosition(geocoder, map);
+            locationParser();
+  });
+        
+        document.getElementById('submit').addEventListener('click', function() {
+          geocodeAddress(geocoder, map);
+        });
+      }
+
+
+function geocodePosition(geocoder, resultsMap) {
+        geocoder.geocode({latLng: marker.getPosition()}, function(results) {
+            if(results[0].formatted_address){
+              locationName = results[0].formatted_address;
+            } else {
+              locationName = '';
+              alert('Please set the marker again, name of the address could not fetched');
+            }
+         
+        });
+        google.maps.event.addDomListener(window, 'load', initMap);
+      }
+
+
+
+
+        function geocodePosition12(geocoder,map) {
+          tmpLonLat = {lat: marker.position.lat, lng: marker.position.lng };
+          geocoder.geocode({'position': tmpLonLat}, function(results, status) {
+          if (status === 'OK') {
+            if(results[0].formatted_address){
+              locationName = results[0].formatted_address;
+            } else {
+              locationName = '';
+              alert('Please set the marker again, name of the address could not fetched');
+            }
+               } 
+        });
+        }
+      var marker, tmpLonLat;
+      var locationName  = 'Kaş, Andifli Mahallesi, 07580 Kaş/Antalya, Turkey';
+      function locationParser(){
+        var lat = marker.position;
+        document.getElementById('lonlat').value = lat;
+        
+        var input = document.getElementById('lonlat').value;
+
+        var latlngStr = input.split(',', 2);
+        var latlngStr1 = input.split('(',2);
+        var latlngStr1 = latlngStr1[1].split(',', 2);
+
+        var latlng = {lat: parseFloat(latlngStr1[0]), lng: parseFloat(latlngStr[1])};
+        document.getElementById('id_lat').value = latlng.lat.toFixed(3);
+        document.getElementById('id_lng').value = latlng.lng.toFixed(6);
+        document.getElementById('id_name').value = locationName;
+      }
+      
+      function markerCoords(marker,map){
+      google.maps.event.addListener(marker, 'dragend', function(event){
+      infoWindow.setOptions({
+          content: '<p>Marker dropped: Current Lat: ' + event.latLng.lat().toFixed(3) + ' Current Lng: ' + event.latLng.lng().toFixed(3) + '</p>'
+      });
+        infoWindow.open(map, marker);
+      });
+      console.log("konsol",event.latLng.lat());
+      }
+      function geocodeAddress(geocoder, resultsMap) {
+        var address = document.getElementById('address').value;
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            if(results[0].formatted_address){
+              locationName = results[0].formatted_address;
+            } else {
+              locationName = '';
+              alert('Please set the marker again, name of the address could not fetched');
+            }
+            if (marker ){
+              marker.position = results[0].geometry.location;
+              marker.map = resultsMap;
+              marker.setPosition(results[0].geometry.location)
+            } else {
+              alert('Unexpected error occured. Please reload the page.');
+            }
+            locationParser();
+
+            
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+        google.maps.event.addDomListener(window, 'load', initMap);
+
+      }
+    </script>
+    
+     {% load static %}
+    <script async defer
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHbsHWZkLuYDZeEF3zp8Yq_djqNzM_aTM&libraries=places&callback=initMap"></script>
+    </script>
+  </body>
+  {% endblock %}
+</html>

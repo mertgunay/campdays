@@ -28,7 +28,14 @@
 					<label><i class="ti-gift preview-icon birth mrg-r-10"></i>July 17 1990</label>
 				</div>
 				<div class="col-sm-6">
-					<label><i class="ti-world preview-icon web mrg-r-10"></i>Www.listinghub.com</label>
+					<label><i class="ti-world preview-icon web mrg-r-10"></i>
+						{% if object.campowner %}
+						<a href="{% url 'campowner:detail' object.campowner.id %}">{{object.campowner.name}}</a>
+
+							{% else %}
+							Kamp sahibi değil
+						{% endif %}
+					</label>
 				</div>
 			</div>
 
