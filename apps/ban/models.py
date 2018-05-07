@@ -7,7 +7,7 @@ User = get_user_model()
 class BannedUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
-    desc = models.CharField(max_length=255)
+    desc = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.user.get_full_name()

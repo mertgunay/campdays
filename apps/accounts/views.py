@@ -7,12 +7,14 @@ from django.views.generic import (
     DetailView,
     UpdateView,
     DeleteView,
+    ListView,
     View,
 )
 
 from accounts.forms import UserRegisterForm
 from accounts.mixins import OwnerRequiredMixin
 from accounts.models import UserProfile
+from ban.models import BannedUser
 
 User = get_user_model()
 
@@ -69,11 +71,29 @@ class CampOwnerFollowToggle(LoginRequiredMixin, View):
         user_to_toggle = request.POST.get("campowner.id")
         user_profile = get_object_or_404(UserProfile, owner_id=user_to_toggle)
         user = request.user
+        print(user_profile.followers.all())
         if user in user_profile.followers.all():
             user_profile.followers.remove(user)
         else:
             user_profile.followers.add(user)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+class AllUsers(LoginRequiredMixin, ListView):
+    queryset = User.objects.all()
+    template_name = 'accounts/all_users.html'
+
+def ban_user(request):
+    user_id = request.POST.get("user_id")
+    desc = request.POST.get("desc")
+    user = get_object_or_404(User, id=user_id)
+
+    print(desc,user)
+
+    BannedUser.objects.create(
+        user=user,
+        desc=desc
+    )
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def validate_username(request):

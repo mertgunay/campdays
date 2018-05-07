@@ -14,7 +14,7 @@
     {% else %}
     {% endif %}
     ">
-    {% if request.user in request.user.userprofile.followers.all%}
+    {% if request.user in campowner.followers.all %}
     <button type="submit" class="btn btn-danger">Takibi bırak</button>
     {% else %}
     <button type="submit" class="btn btn-success">Takip Et</button>

@@ -39,7 +39,7 @@ def accept_or_reject(request):
             campowner.is_active = False
             campowner.is_pending = False
             campowner.save()
-    return HttpResponseRedirect("/superuser/pending_owners")
+    return HttpResponseRedirect("/campowner/pending_owners")
 
 def campowner(request, pk=None):
     obj = get_object_or_404(CampOwner, pk=pk)
