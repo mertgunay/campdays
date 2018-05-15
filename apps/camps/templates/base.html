@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+    {% load staticfiles %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <title>Home</title>
+  </head>
+  <body>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>Sidebar Transitions</title>
+		<meta name="description" content="Sidebar Transitions: Transition effects for off-canvas views" />
+		<meta name="keywords" content="transition, off-canvas, navigation, effect, 3d, css3, smooth" />
+		<meta name="author" />
+		<link rel="shortcut icon" href="../favicon.ico">
+		<link rel="stylesheet" type="text/css" href="../static/sidebarProvider/css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="../static/sidebarProvider/css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="../static/sidebarProvider/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="../static/sidebarProvider/css/component.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="../static/sidebarProvider/js/modernizr.custom.js"></script>
+	</head>
+	<body>
+		<div id="st-container" class="st-container">
+			<!-- content push wrapper -->
+			<div class="st-pusher">
+		
+				<nav class="st-menu st-effect-3" id="menu-3">
+					<h2><span class="icon icon-location"></span>CAMPDAYS</h2>
+					<ul>
+                    <li><a class="icon icon-data" href="../../home">Timeline</a></li>
+                    <li><a class="icon icon-study" href="../../live">Search</a></li>
+                    <li><a class="icon icon-photo" href="../../bmi">Reservations</a></li>
+                    <li><a class="icon icon-location" href="../../status">Profile</a></li>
+                    <li><a class="icon icon-wallet" href="../../optimals">Create Camping Area</a></li>
+
+
+					</ul>
+				</nav>
+
+				<div class="st-content"><!-- this is the wrapper for the content -->
+					<div class="st-content-inner"><!-- extra div for emulating position:fixed of the menu -->
+						<!-- Top Navigation -->
+						<header class="codrops-header">
+							<h1>CAMPDAYS<span>Be ready for your next camping experience</span></h1>
+            </header>
+            {% block content %}
+              {% endblock %}
+            <div id="st-trigger-effects" class="column">
+                
+								<button data-effect="st-effect-3"><span class="fa fa-chevron-circle-right"></span> MENU</button>
+              </div>
+						<div class="main clearfix">
+						</div><!-- /main -->
+					</div><!-- /st-content-inner -->
+				</div><!-- /st-content -->
+			</div><!-- /st-pusher -->
+		</div><!-- /st-container -->
+		<script src="../static/sidebarProvider/js/classie.js"></script>
+		<script src="../static/sidebarProvider/js/sidebarEffects.js"></script>
+	</body>
+</html>

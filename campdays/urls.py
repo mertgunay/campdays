@@ -17,15 +17,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from campdays.views import home
+from campdays.views import HomeView
+
 
 urlpatterns = [
-    path('',home, name='home'),
+    path('', HomeView.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
-    path('superuser/', include('campowner.urls')),
+    path('campowner/', include('campowner.urls')),
     path('blog/', include('blog.urls')),
     path('ban/', include('ban.urls')),
+    path('camps/', include('camps.urls')),
+
+
 ]
 
 if settings.DEBUG:

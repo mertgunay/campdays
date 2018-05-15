@@ -4,7 +4,9 @@ from django.urls import reverse
 from django.db import models
 from utils.slugify import unique_slug_generator_for_blog
 from django.db.models.signals import pre_save
+from django.contrib.contenttypes.models import ContentType
 from django.dispatch import receiver
+from campowner.models import CampOwner
 
 User = get_user_model()
 
@@ -43,6 +45,18 @@ class Post(models.Model):
 
     class Meta:
         ordering = ["-timestampt", "-updated"]
+
+    @property
+    def comments(self):
+        instance = self
+        qs = Comments.objects.filter_by_instance(instance)
+        return qs
+
+    @property
+    def get_content_type(self):
+        instance = self
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        return content_type
 
 @receiver(pre_save, sender=Post)
 def user_pre_save_receiver(sender, instance, *args, **kwargs):

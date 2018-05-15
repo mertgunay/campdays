@@ -71,12 +71,12 @@
 										<!-- Single Comment -->
 										<div class="single-comment">
 											<div class="img-holder">
-												<img src="assets/img/user-1.png" class="img-responsive" alt="">
+											<img src="{{user.get_image_url}}" class="img-responsive" alt=""/>
 											</div>
 											<div class="text-holder">
 												<div class="top">
 													<div class="name pull-left">
-														<h4>Robert Mil</h4>
+														<h4>{{comment.user.get_full_name}}</h4>
 													</div>
 													<div class="rating pull-right">
 														<ul>
@@ -90,10 +90,10 @@
 												</div>
 
 												<div class="text">
-													<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+													<p>{{ comment.content }}</p>
 												</div>
 
-												<span class="small">Dec 30 2017</span>
+												<span class="small">{{comment.timestamp}}</span>
 											</div>
 										</div>
 

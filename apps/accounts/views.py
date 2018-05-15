@@ -1,17 +1,20 @@
 from django.contrib.auth import login, authenticate, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.views.generic import (
     CreateView,
     DetailView,
     UpdateView,
     DeleteView,
+    ListView,
     View,
 )
 
 from accounts.forms import UserRegisterForm
 from accounts.mixins import OwnerRequiredMixin
+from campowner.models import CampProfile
+from ban.models import BannedUser
 
 User = get_user_model()
 
@@ -43,7 +46,7 @@ class UserUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
         'image',
         'first_name',
         'last_name',
-        
+        'gender',
     ]
 
     def get_object(self, *args, **kwargs):
@@ -61,6 +64,36 @@ class UserDeleteView(LoginRequiredMixin, OwnerRequiredMixin, DeleteView):
         username = self.kwargs.get('username')
         instance = get_object_or_404(User, username=username)
         return instance
+
+
+class CampOwnerFollowToggle(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        camp_to_toggle = request.POST.get("campowner.id")
+        camp_profile = get_object_or_404(CampProfile, owner_id=camp_to_toggle)
+        user = request.user
+        if user in camp_profile.followers.all():
+            camp_profile.followers.remove(user)
+        else:
+            camp_profile.followers.add(user)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+class AllUsers(LoginRequiredMixin, ListView):
+    queryset = User.objects.all()
+    template_name = 'accounts/all_users.html'
+
+def ban_user(request):
+    user_id = request.POST.get("user_id")
+    desc = request.POST.get("desc")
+    user = get_object_or_404(User, id=user_id)
+
+    print(desc,user)
+
+    BannedUser.objects.create(
+        user=user,
+        desc=desc
+    )
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 def validate_username(request):
     data = {'error': False}
