@@ -12,6 +12,3 @@ class Reservation(models.Model):
     check_out    = models.DateField(default=datetime.date.today)
     guests       = models.IntegerField(default=1)
     tents        = models.IntegerField(default=0) #comes with the tent or not
-
-    def __str__(self):
-        return self.place

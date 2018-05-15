@@ -31,6 +31,8 @@ class campLocation(models.Model):
     description = models.CharField(max_length=100, default='')
     rating = models.PositiveIntegerField(range(1, 100))
     dateCreated=models.DateTimeField(auto_now=True, editable=False)
+    max_guests = models.IntegerField()
+    max_tents = models.IntegerField()
 
     class Meta:
         db_table = u'campLocation'
