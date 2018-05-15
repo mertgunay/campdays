@@ -4,6 +4,8 @@ from django.views.generic import CreateView
 from campowner.forms import CampOwnerRegisterForm
 from campowner.models import CampOwner
 from blog.models import Post
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
 
 class CampOwnerCreateView(CreateView):
     template_name = 'accounts/registration/register_campowner.html'
@@ -43,9 +45,27 @@ def accept_or_reject(request):
 
 def campowner(request, pk=None):
     obj = get_object_or_404(CampOwner, pk=pk)
-    blogs = Post.objects.filter(user=request.user)
+    blogs = Post.objects.filter(user=obj.user)
     context = {
         'campowner': obj,
         'object_list': blogs,
     }
     return render(request, "campowner/campdetail.html", context)
+
+
+def camp_owners(request):
+    search = request.GET.get("search")
+    if search:
+        campowners = CampOwner.objects.filter(is_active=True, name__contains=search)
+    else:
+        campowners = CampOwner.objects.filter(is_active=True)
+    
+        
+    paginator = Paginator(campowners, 10) # Show 10 contacts per page
+    page = request.GET.get('page')
+    campowners_with_page = paginator.get_page(page)
+    context = {
+        'campowners': campowners_with_page,
+        'search': search,
+    }
+    return render(request, 'campowner/camp_owners.html', context)

@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'comment.apps.CommentConfig',
     'ban.apps.BanConfig',
     'camps.apps.CampsConfig',
+    'booking.apps.BookingConfig',
 ]
 
 MIDDLEWARE = [

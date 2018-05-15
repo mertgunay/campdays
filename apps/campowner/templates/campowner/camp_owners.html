@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+{{ campowner }}
+
+
+<section class="show-case">
+<div class="container">
+	<div class="row">
+		<form method='GET' action="{% url 'campowner:camp_owners' %}">
+			<input type="text" name="search" value="{%if search %} {{search}} {% endif %}" placeholder="Arama...">
+			<button type="submit"> Ara </button>
+		</form>
+	{% for campowner in campowners %}
+		<div class="col-md-12 col-sm-12">
+			<div class="verticleilist listing-shot">
+				<div class="listing-badge now-open">Now Open</div>
+				<a class="listing-item" href="{% url 'campowner:detail' campowner.pk %}">
+					<div class="listing-shot-img">
+						<img src="{%if campowner.image %}{{campowner.image.url}}{%endif%}" class="img-responsive" alt="">
+						<span class="approve-listing"><i class="fa fa-check"></i></span>
+					</div>
+				</a>
+
+				<div class="verticle-listing-caption">
+
+					<form action="{% url 'users:campowner_follow' %}" method="post">
+					    {% csrf_token %}
+					    <input type="hidden" name="campowner.id" value="
+					    {% if campowner.id %}
+					      {{campowner.id}}
+					    {% else %}
+					    {% endif %}
+					    ">
+
+					    {% if request.user in campowner.campprofile.followers.all %}
+					    <button type="submit" class="btn btn-danger">Takibi bırak</button>
+					    {% else %}
+					    <button type="submit" class="btn btn-success">Takip Et</button>
+					    {% endif %}
+					  </form>
+					 
+					
+					
+					<div class="listing-shot-caption">
+						<h4>{{campowner.name}}</h4>
+						<p class="listing-description">{{campowner.desc}}</p>
+					</div>
+					<div class="listing-shot-info">
+						<div class="row extra">
+							<div class="col-md-12">
+								<div class="listing-detail-info">
+									<span><i class="fa fa-map-marker" aria-hidden="true"></i>{{campowner.address}}</span>
+									<span><i class="fa fa-phone" aria-hidden="true"></i>{{campowner.phone_number}}</span>
+									<span><i class="fa fa-globe" aria-hidden="true"></i>{{campowner.web_site}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="listing-shot-info rating">
+						<div class="row extra">
+							<div class="col-md-7 col-sm-7 col-xs-6">
+								<i class="color fa fa-star" aria-hidden="true"></i>
+								<i class="color fa fa-star" aria-hidden="true"></i>
+								<i class="color fa fa-star" aria-hidden="true"></i>
+								<i class="color fa fa-star-half-o" aria-hidden="true"></i>
+								<i class="fa fa-star" aria-hidden="true"></i>
+								<span>27 Reviews</span>
+							</div>
+							<div class="col-md-5 col-sm-5 col-xs-6 pull-right">
+								<a href="{% url 'campowner:detail' campowner.pk %}" class="detail-link">Detay Görüntüle</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	{% empty %}
+	<h4>Onaylanmış bir kamp hesabı yok</h4>
+	{% endfor %}
+
+	</div>
+	
+	<!-- Start Pagination -->
+
+	
+ 	
+	<div class="row">
+		<div class="col-md-12">
+			<div class="bs-example">
+				<ul class="pagination">
+
+					{% if campowners.has_previous %}
+					<li>
+  			            <a href="?page={{ campowners.previous_page_number }}">&laquo;</a>
+  			        </li>
+			        {% endif %}
+			        <li>
+			        	<a href="">
+							{{ campowners.number }}/{{ campowners.paginator.num_pages }}
+						</a>
+					</li>
+					{% if campowners.has_next %}
+					<li>
+			            <a href="?page={{ campowners.next_page_number }}"> &raquo; </a>
+			         </li>
+			        {% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- End Pagination -->
+</div>
+
+
+</section>
+
+{% endblock content %}
