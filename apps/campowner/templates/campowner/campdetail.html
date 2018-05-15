@@ -2,8 +2,14 @@
 
 {% block content %}
 
+
+  <div id="detail_map"></div>
+
+  {% if campowner == request.user.campowner %}
   <a class="btn btn-primary" href="{% url 'blog:create' %}" >Yeni Blog Oluştur</a>
   <br><br>
+ {% endif %}
+
 
   {{campowner.name}} <br>
   <form class="" action="{% url 'users:campowner_follow' %}" method="post">
@@ -23,7 +29,7 @@
   </form>
     <!-- FOLLOW TOGGLE BUTTON END -->
     <br><br>
-  Blog
+    Blog
 
   <section >
 
