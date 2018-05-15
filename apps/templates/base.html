@@ -14,10 +14,11 @@
   </head>
   <body>
 
-    {% include 'messages_display.html' %}
     <div class="wrapper">
       {% include "includes/nav.html" %}
+
       <div class="container" style="margin-top:80px;">
+        {% include 'messages_display.html' %}
         {% block content %}{% endblock content %}
       </div>
       {% include "includes/js.html" %}

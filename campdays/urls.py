@@ -28,6 +28,7 @@ urlpatterns = [
     path('blog/', include('blog.urls')),
     path('ban/', include('ban.urls')),
     path('camps/', include('camps.urls')),
+    path('booking/', include('booking.urls')),
 
 
 ]
