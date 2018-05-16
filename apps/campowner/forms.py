@@ -21,6 +21,9 @@ class CampOwnerRegisterForm(forms.ModelForm):
             'name',
             'address',
             'image',
+            'desc',
+            'phone_number',
+            'web_site',
         }
 
     def save(self, commit=True):

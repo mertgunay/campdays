@@ -30,7 +30,11 @@
 				<div class="col-sm-6">
 					<label><i class="ti-world preview-icon web mrg-r-10"></i>
 						{% if object.campowner %}
-						<a href="{% url 'campowner:detail' object.campowner.id %}">{{object.campowner.name}}</a>
+							{% if object.campowner.is_active %}
+								<a href="{% url 'campowner:detail' object.campowner.id %}">{{object.campowner.name}}</a>
+							{% else %}
+								{{object.campowner.name}} (onaylanmadı)
+							{% endif %}
 
 							{% else %}
 							Kamp sahibi değil

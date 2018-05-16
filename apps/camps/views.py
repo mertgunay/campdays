@@ -37,6 +37,8 @@ def createCampingArea(request):
             campLocation.name = form.cleaned_data['name']
             campLocation.title = form.cleaned_data['title']
             campLocation.description = form.cleaned_data['description']
+            campLocation.max_guests = form.cleaned_data['max_guests']
+            campLocation.max_tents = form.cleaned_data['max_tents']
             campLocation.rating = 50
             campLocation.save()
             return redirect('../maps')
@@ -49,6 +51,13 @@ def createCampingArea(request):
 def filter(request):
     
     return render(request, "filter.html") 
+
+def detail(request, id):
+    campId = id
+    camp = campLocation.objects.get(id=id)
+
+    return render(request, "camp.html", {'camp' : camp}) 
+
 
 # def createCampingArea(request):
 
