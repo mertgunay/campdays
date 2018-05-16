@@ -14,6 +14,7 @@ class CampOwner(models.Model):
 	user            = models.OneToOneField(User, on_delete=models.CASCADE)
 	name            = models.CharField(max_length=50)
 	slug            = models.SlugField(unique=True, blank=True)
+
 	address         = models.CharField(max_length=255)
 	image           = models.ImageField(
 	    upload_to=campowner_upload_location,
@@ -26,6 +27,10 @@ class CampOwner(models.Model):
 	height_field    = models.PositiveIntegerField(default=0)
 	is_active       = models.BooleanField(default=False)
 	is_pending 		= models.BooleanField(default=True)
+	timestamp 		= models.DateTimeField(auto_now_add=True)
+	desc 			= models.CharField(max_length=255, blank=True, null=True)
+	phone_number 	= models.CharField(max_length=100)
+	web_site 		= models.CharField(max_length=100, blank=True, null=True)
 
 	def __str__(self):
 		return self.name
