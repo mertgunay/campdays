@@ -1,0 +1,68 @@
+{% load l10n %}
+
+<!DOCTYPE html>
+<html>
+        {% block content %}
+  <head>
+    <meta charset="utf-8">
+    <title>Marker Animations</title>
+    {% load static %}
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 50%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <h1> {{camp.name}} </h1>
+    <h2> {{camp.title}} </h2>
+    <h2> {{camp.description}} </h2>
+    <script>
+
+      // The following example creates a marker in Stockholm, Sweden using a DROP
+      // animation. Clicking on the marker will toggle the animation between a BOUNCE
+      // animation and no animation.
+
+      var marker;
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: {lat: 37.034, lng: 27.430540}
+        });
+        var campLat = {{camp.lat |unlocalize}}
+        var campLng = {{camp.lng |unlocalize}}
+
+        marker = new google.maps.Marker({
+          map: map,
+          draggable: true,
+          animation: google.maps.Animation.DROP,
+          position: {lat: campLat, lng: campLng}
+        });
+        marker.addListener('click', toggleBounce);
+      }
+
+      function toggleBounce() {
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+      }
+    </script>
+    {% load static %}
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHbsHWZkLuYDZeEF3zp8Yq_djqNzM_aTM&callback=initMap">
+    </script>
+  </body>
+  {% endblock %}
+</html>
