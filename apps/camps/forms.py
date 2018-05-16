@@ -22,4 +22,6 @@ class createAreaForm(forms.ModelForm):
             'name',
             'title',
             'description',
+            'max_guests',
+            'max_tents',
             )
