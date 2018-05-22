@@ -1,9 +1,11 @@
 from django.shortcuts import render, reverse, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 from django.views.generic import CreateView
 from campowner.forms import CampOwnerRegisterForm
 from campowner.models import CampOwner
 from blog.models import Post
+
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
@@ -14,6 +16,7 @@ class CampOwnerCreateView(CreateView):
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.user = self.request.user
+        messages.success(self.request, "Kamp istediğiniz adminler tarafından incelenip onaylanacak")
         return super(CampOwnerCreateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -38,9 +41,7 @@ def accept_or_reject(request):
         elif 'reject' in request.POST:
             id = request.POST.get("reject")
             campowner = get_object_or_404(CampOwner, id=id)
-            campowner.is_active = False
-            campowner.is_pending = False
-            campowner.save()
+            campowner.delete()
     return HttpResponseRedirect("/campowner/pending_owners")
 
 def campowner(request, pk=None):
@@ -59,8 +60,8 @@ def camp_owners(request):
         campowners = CampOwner.objects.filter(is_active=True, name__contains=search)
     else:
         campowners = CampOwner.objects.filter(is_active=True)
-    
-        
+
+
     paginator = Paginator(campowners, 10) # Show 10 contacts per page
     page = request.GET.get('page')
     campowners_with_page = paginator.get_page(page)

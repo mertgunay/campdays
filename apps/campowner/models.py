@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
+from django.utils.translation import gettext, gettext_lazy as _
 
 from utils.slugify import unique_slug_generator
 
@@ -12,9 +13,11 @@ def campowner_upload_location(instance, filename):
 
 class CampOwner(models.Model):
 	user            = models.OneToOneField(User, on_delete=models.CASCADE)
-	name            = models.CharField(max_length=50)
+	name            = models.CharField(
+		_('Kamp Alanı Adı'),
+		max_length=50,
+	)
 	slug            = models.SlugField(unique=True, blank=True)
-
 	address         = models.CharField(max_length=255)
 	image           = models.ImageField(
 	    upload_to=campowner_upload_location,

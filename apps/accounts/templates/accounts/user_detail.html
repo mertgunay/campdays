@@ -16,6 +16,9 @@
 					<a href="{% url 'users:user_update' object.username %}">Profili Güncelle</a>
 					{% endif %}
 				</p>
+				<p>
+					<a href="{% url 'users:logout' %}">Çıkış Yap</a>
+				</p>
 			</div>
 			<div class="row mrg-r-10 mrg-l-10 preview-info">
 				<div class="col-sm-6">
@@ -31,7 +34,9 @@
 					<label><i class="ti-world preview-icon web mrg-r-10"></i>
 						{% if object.campowner %}
 							{% if object.campowner.is_active %}
-								<a href="{% url 'campowner:detail' object.campowner.id %}">{{object.campowner.name}}</a>
+								<a href="{% url 'campowner:detail' object.campowner.id %}">
+									{{object.campowner.name}}
+								</a>
 							{% else %}
 								{{object.campowner.name}} (onaylanmadı)
 							{% endif %}
@@ -40,13 +45,9 @@
 							Kamp sahibi değil
 						{% endif %}
 					</label>
+
 				</div>
 			</div>
-
-			<br>
-			<a href="{% url 'users:logout' %}">Logout</a>
-			<br>
-
 		</div>
 		<!-- End General Information -->
 	</div>

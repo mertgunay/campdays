@@ -21,7 +21,7 @@
 
       <ul class="nav navbar-nav navbar-center" data-in="fadeInDown" data-out="fadeOutUp">
 
-        <li><a href="{% url 'blog:list' %}">Blog</a></li>
+        <!-- <li><a href="{% url 'blog:list' %}">Blog</a></li> -->
         <li><a href="{% url 'campowner:camp_owners' %}">Tüm Kamp Alanları</a></li>
         {% if request.user.is_authenticated %}
           {% if request.user.is_superuser %}

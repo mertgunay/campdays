@@ -6,8 +6,10 @@ from blog.models import Post
 class HomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
-        followers_ids = [g_p.owner.id for g_p in user.followers.all()]
-        queryset = Post.objects.filter(user__id__in=followers_ids).order_by('-timestampt')
+        campowners_ids = [c_o.owner.id for c_o in user.followers.all()]
+        queryset = Post.objects.filter(
+                user__campowner__id__in=campowners_ids
+            ).order_by('-timestampt')
         context = {
             'blogs': queryset,
         }
