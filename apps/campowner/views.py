@@ -3,8 +3,9 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.views.generic import CreateView
 from campowner.forms import CampOwnerRegisterForm
-from campowner.models import CampOwner
+from campowner.models import CampOwner, BlockedPosts
 from blog.models import Post
+
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
@@ -29,6 +30,16 @@ def pending_owners(request):
     }
     return render(request, 'campowner/pending_owners.html', context)
 
+def block_post(request):
+    if request.method == 'POST':
+        user = request.user
+        camp_id = request.POST.get("camp_id")
+        campowner = get_object_or_404(CampOwner, id=camp_id)
+        BlockedPosts.objects.create(
+            user=user,
+            campowner=campowner,
+        )
+        return HttpResponseRedirect("/")
 
 def accept_or_reject(request):
     if request.method == 'POST':

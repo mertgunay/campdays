@@ -21,21 +21,18 @@
 				</p>
 			</div>
 			<div class="row mrg-r-10 mrg-l-10 preview-info">
-				<div class="col-sm-6">
-					<label><i class="ti-mobile preview-icon call mrg-r-10"></i>91 258 574 5287</label>
-				</div>
+
 				<div class="col-sm-6">
 					<label><i class="ti-email preview-icon email mrg-r-10"></i> {{object.email}}</label>
 				</div>
-				<div class="col-sm-6">
-					<label><i class="ti-gift preview-icon birth mrg-r-10"></i>July 17 1990</label>
-				</div>
+
 				<div class="col-sm-6">
 					<label><i class="ti-world preview-icon web mrg-r-10"></i>
 						{% if object.campowner %}
 							{% if object.campowner.is_active %}
 								<a href="{% url 'campowner:detail' object.campowner.id %}">
-									{{object.campowner.name}}
+									<b>{{object.campowner.name}}</b>
+
 								</a>
 							{% else %}
 								{{object.campowner.name}} (onaylanmadı)
