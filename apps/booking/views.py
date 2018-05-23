@@ -18,9 +18,6 @@ def booking(request, pk=None):
             if calculateAvailability(camp_location, reservation):
                 reservation.save()
                 messages.success(request, "Başarı ile reservasyon yapıldı.")
-                messages.success(request, "Başarı ile r23232323eservasyon yapıldı.")
-                messages.success(request, "Başarı ile reservasy232323232323on yapıldı.")
-                messages.success(request, "Başarı ile reservasyon yapıld3232323232323ı.")
             else:
                 messages.error(request, "Kapasite yetersiz.")
             return HttpResponseRedirect("/")
@@ -44,12 +41,20 @@ def calculateAvailability(camp_location, reservation):
             for date2 in daterange(reservation.check_in, reservation.check_out):
                 if (date == date2):
                     tents += r.tents
+                    tents += reservation.tents
                     guests += r.guests
+                    guests += reservation.guests
             print(date)
             print("bugün için toplam")
             print(tents, guests)
-            tents = 0
-            guests = 0
 
 
+    print("Total tents=", tents, "Total guests=", guests)
     return True
+
+
+
+def list_reservations(request):
+
+    queryset = Reservation.objects.filter(user=User)
+    
