@@ -9,13 +9,11 @@ from camps.views import home, maps, createCampingArea, filter, detail
 
 app_name = 'camps'
 
-urlpatterns = [        
+urlpatterns = [
     url(r'^home/', camp_views.home),
-    url(r'^maps/', camp_views.maps),
-    url(r'^create/', camp_views.createCampingArea),
-    url(r'^filter/', camp_views.filter),
+    url(r'^maps/', camp_views.maps, name="maps"),
+    url(r'^create/', camp_views.createCampingArea, name="create"),
+    url(r'^filter/', camp_views.filter, name="filter"),
     url(r'^detail/(?P<id>\w{0,50})/$', camp_views.detail),
 
 ]
-
-
