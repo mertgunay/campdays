@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'campowner.apps.CampownerConfig',
     'comment.apps.CommentConfig',
     'ban.apps.BanConfig',
+    'camps.apps.CampsConfig',
+    'booking.apps.BookingConfig',
 ]
 
 MIDDLEWARE = [
