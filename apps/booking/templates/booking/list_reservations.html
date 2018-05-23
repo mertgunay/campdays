@@ -3,7 +3,7 @@
 {% block content %}
 
 
-<h3> Reservations for {{request.user.name}}</h3>
+<h3> Reservations for {{request.user.get_full_name}}</h3>
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -24,6 +24,27 @@
   </tbody>
 </table>
 
+
+<h3> Old Reservations for {{request.user.get_full_name}}</h3>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Place</th>
+      <th scope="col">Check_in</th>
+      <th scope="col">Check_out</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for reservation in object_list2 %}
+      <tr>
+        <th scope="row">{{reservation.place}}</th>
+        <td>{{reservation.check_in}}</td>
+        <td>{{reservation.check_out}} </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 
 {% endblock content %}

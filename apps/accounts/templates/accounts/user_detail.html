@@ -26,6 +26,15 @@
 					<label><i class="ti-email preview-icon email mrg-r-10"></i> {{object.email}}</label>
 				</div>
 
+				{% if request.user == object %}
+
+				<div class="col-sm-6">
+					<label><i class="ti-email preview-icon email mrg-r-10"></i>
+						<a href="{% url 'booking:list_reservations' %}"> Rezervasyonlar </a></label>
+				</div>
+
+				{% endif %}
+
 				<div class="col-sm-6">
 					<label><i class="ti-world preview-icon web mrg-r-10"></i>
 						{% if object.campowner %}

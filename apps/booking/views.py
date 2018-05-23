@@ -60,10 +60,12 @@ def calculateAvailability(camp_location, reservation):
 
 
 def list_reservations(request):
-
-    queryset = Reservation.objects.filter(user=User)
+    now = datetime.datetime.now()
+    cont = Reservation.objects.filter(user=request.user).filter(check_out__lte=now).order_by("-timestamp")
+    finished = Reservation.objects.filter(user=request.user).filter(check_out__gte=now).order_by("-timestamp")
 
     context = {
-        'object_list' : queryset,
+        'object_list' : finished,
+        'object_list2' : cont,
     }
     return render(request, 'booking/list_reservations.html', context)
