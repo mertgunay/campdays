@@ -62,10 +62,10 @@
     </tr>
   </thead>
   <tbody>
-    {% for reservation in reservation_list %}
+    {% for camps_area in camps_areas %}
       <tr>
-        <td>{{reservation.user.get_full_name}}</th>
-        <td>{{reservation.timestamp|timesince}} önce</td>
+        <td>{{camps_area.title}}</th>
+        <td>{{camps_area.dateCreated|timesince}} önce</td>
       </tr>
       {% empty %}
       <tr>

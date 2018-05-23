@@ -10,7 +10,7 @@
 
     <!-- Start Header Navigation -->
     <div class="navbar-header">
-      <a class="navbar-brand" href="{% url 'home' %}">
+      <a class="navbar-brand" href="{% url 'camps:filter' %}">
         <img src="{% static 'assets/img/logo.png' %}" class="logo logo-display" alt="">
         <img src="{% static 'assets/img/logo.png' %}" class="logo logo-scrolled" alt="">
       </a>
@@ -22,7 +22,9 @@
       <ul class="nav navbar-nav navbar-center" data-in="fadeInDown" data-out="fadeOutUp">
 
         <!-- <li><a href="{% url 'blog:list' %}">Blog</a></li> -->
-        <li><a href="{% url 'campowner:camp_owners' %}">Tüm Kamp Alanları</a></li>
+        <li><a href="{% url 'home' %}">Anasayfa</a></li>
+        <li><a href="{% url 'campowner:camp_owners' %}">Tüm Kamp Sahipleri</a></li>
+        <li><a href="{% url 'camps:maps' %}">Tüm Kamp Alanları</a></li>
         {% if request.user.is_authenticated %}
           {% if request.user.is_superuser %}
           <li>   <a class="dropdown-toggle"
