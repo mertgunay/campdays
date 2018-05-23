@@ -1,9 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 # from django.contrib.auth import  authenticate, login, logout, update_session_auth_hash
 # from django.urls import reverse
 from .forms import createAreaForm
 from .models import campLocation
+from campowner.forms import CampOwnerRegisterForm
+from campowner.models import CampOwner, BlockedPosts
+from blog.models import Post
 # Create your views here.
 
 
@@ -55,8 +58,14 @@ def filter(request):
 def detail(request, id):
     campId = id
     camp = campLocation.objects.get(id=id)
-
-    return render(request, "camp.html", {'camp' : camp}) 
+    obj = get_object_or_404(CampOwner, pk=id)
+    blogs = Post.objects.filter(user=obj.user)
+    context = {
+        'campowner': obj,
+        'object_list': blogs,
+    }
+   
+    return render(request, "camp.html", {'camp' : camp ,'context' : context}) 
 
 
 # def createCampingArea(request):
