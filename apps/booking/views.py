@@ -4,8 +4,13 @@ from django.http import HttpResponseRedirect
 from camps.models import campLocation
 from django.contrib import messages
 from booking.models import Reservation
+from django.contrib.auth import get_user_model
+
 
 import datetime
+
+User = get_user_model()
+
 def booking(request, pk=None):
     camp_location = campLocation.objects.get(pk=pk)
 
@@ -57,4 +62,8 @@ def calculateAvailability(camp_location, reservation):
 def list_reservations(request):
 
     queryset = Reservation.objects.filter(user=User)
-    
+
+    context = {
+        'object_list' : queryset,
+    }
+    return render(request, 'booking/list_reservations.html', context)
