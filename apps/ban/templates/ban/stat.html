@@ -2,6 +2,7 @@
 
 {% block content %}
 
+
 <h4>Son 1 saatte giriş yapanlar</h4>
 <table class="table table-bordered">
   <thead>
@@ -10,13 +11,16 @@
       <th scope="col">Ne zaman ?</th>
     </tr>
   </thead>
-  <form action="{% url 'campowner:accept_or_reject' %}"
-    method="post">{% csrf_token %}
   <tbody>
     {% for user in object_list %}
       <tr>
-        <td>{{user.username}}</th>
+        <td>{{user.get_full_name}}</th>
         <td>{{user.last_login|timesince}} önce</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td>Son 1 satte giriş yapan yok</td>
+        <td></td>
       </tr>
     {% endfor %}
   </tbody>
@@ -32,13 +36,41 @@
       <th scope="col">Ne zaman ?</th>
     </tr>
   </thead>
-  <form action="{% url 'campowner:accept_or_reject' %}"
-    method="post">{% csrf_token %}
   <tbody>
-    {% for user in object_list %}
+    {% for reservation in reservation_list %}
       <tr>
-        <td>{{user.username}}</th>
-        <td>{{user.last_login|timesince}} önce</td>
+        <td>{{reservation.user.get_full_name}}</th>
+        <td>{{reservation.timestamp|timesince}} önce</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td>Son 1 saatte rezervasyon yok</td>
+        <td></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<hr>
+
+<h4>Son 1 saatte mekan oluşturanlar</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Kim</th>
+      <th scope="col">Ne zaman ?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for camps_area in camps_areas %}
+      <tr>
+        <td>{{camps_area.title}}</th>
+        <td>{{camps_area.dateCreated|timesince}} önce</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td>Son 1 saatte rezervasyon yok</td>
+        <td></td>
       </tr>
     {% endfor %}
   </tbody>
