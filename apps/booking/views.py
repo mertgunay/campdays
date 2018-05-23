@@ -57,7 +57,4 @@ def calculateAvailability(camp_location, reservation):
 def list_reservations(request):
 
     queryset = Reservation.objects.filter(user=User)
-    if queryset.exists():
-
-    else:
-        data["error"] = ""
+    
