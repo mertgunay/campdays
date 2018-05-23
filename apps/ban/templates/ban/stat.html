@@ -2,18 +2,47 @@
 
 {% block content %}
 
-{% if banned_users %}
+<h4>Son 1 saatte giriş yapanlar</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Kullanıcı</th>
+      <th scope="col">Ne zaman ?</th>
+    </tr>
+  </thead>
+  <form action="{% url 'campowner:accept_or_reject' %}"
+    method="post">{% csrf_token %}
+  <tbody>
+    {% for user in object_list %}
+      <tr>
+        <td>{{user.username}}</th>
+        <td>{{user.last_login|timesince}} önce</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
-<b>Banlı Kullanıcılar</b>:
-<br>
-<ul>
-{% for ban in banned_users %}
-  <li>{{ban.user.get_full_name}}</li>
-{% endfor %}
-</ul>
-{% else %}
-Banlı kullanıcı yok
-{% endif %}
+<hr>
+
+<h4>Son 1 saatte rezervasyon yapanlar</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Kullanıcı</th>
+      <th scope="col">Ne zaman ?</th>
+    </tr>
+  </thead>
+  <form action="{% url 'campowner:accept_or_reject' %}"
+    method="post">{% csrf_token %}
+  <tbody>
+    {% for user in object_list %}
+      <tr>
+        <td>{{user.username}}</th>
+        <td>{{user.last_login|timesince}} önce</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 
 {% endblock content %}

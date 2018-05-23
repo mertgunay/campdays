@@ -3,12 +3,12 @@
 
 {% if not request.user.campowner %}
 
-<section class="log-wrapper" enctype="multipart/form-data">
+<section class="log-wrapper" >
 	<div class="container">
 		<div class="col-md-6 col-sm-10 col-md-offset-3 col-sm-offset-1">
 			<div class="log-box">
 				<h2>Kamp Sahibi <span class="theme-cl">OL!</span></h2>
-				<form method="post">
+				<form method="post" enctype="multipart/form-data">
           {% csrf_token %}
 					{{form.as_p}}
           <button type="submit" class="btn theme-btn width-200 btn-radius" name="button">Üye Ol</button>

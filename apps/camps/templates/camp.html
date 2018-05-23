@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% load l10n %}
+
+{% block content %}
+ {% block css_ext %}
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 300px;
+        position:static !important ;
+        overflow: hidden;
+      }
+      /* Optional: Makes the sample page fill the window. */
+
+    </style>
+    {% endblock css_ext %}
+    <div class="container" style="height: 250px !important; width: 250px; display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center',"> 
+        <div id="map"></div>
+    </div>
+
+
+
+  {% if campowner == request.user.campowner %}
+  <a class="btn btn-primary" href="{% url 'blog:create' %}" >Yeni Blog Oluştur</a>
+  <br><br>
+ {% endif %}
+
+
+  {{campowner.name}} <br>
+  <form class="" action="{% url 'users:campowner_follow' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="campowner.id" value="
+    {% if campowner.id %}
+      {{campowner.id}}
+    {% else %}
+    {% endif %}
+    ">
+
+    {% if request.user in campowner.campprofile.followers.all %}
+    <button type="submit" class="btn btn-danger">Takibi bırak</button>
+    {% else %}
+    <button type="submit" class="btn btn-success">Takip Et</button>
+    {% endif %}
+  </form>
+
+  <a href="{% url 'booking:reservation' 1 %}" type="button" class="btn btn-default" name="button">Rezervasyon Yap</a>
+       <div class="container" style="position: fixed">
+
+    <h1> {{camp.name}} </h1>
+    <h2> {{camp.title}} </h2>
+    <h2> {{camp.description}} </h2>
+      </div>
+    <!-- FOLLOW TOGGLE BUTTON END -->
+    <br><br>
+    Blog
+
+  <section >
+
+    <div class="container">
+      <div class="widget-boxed-body padd-top-5">
+
+        <!-- FOLLOW TOGGLE BUTTON -->
+
+      </div>
+
+      <div class="row">
+
+        {% for obj in object_list %}
+        <div class="col-md-4 col-sm-6">
+          <div class="blog-box blog-grid-box">
+            <div class="blog-grid-box-img">
+
+              <img src="{% if obj.image %}{{obj.image.url}}{% endif %}" class="img-responsive" alt=""/>
+
+            </div>
+
+            <div class="blog-grid-box-content">
+              <div class="blog-avatar text-center">
+
+                <img src="{{obj.user.get_image_url}}" class="img-responsive" alt=""/>
+
+                <img src="" class="img-responsive" alt=""/>
+
+                <p> <span class="theme-cl">{{ obj.user.get_full_name }}</span><strong> Kişi tarafından</strong></p>
+              </div>
+              <h4>{{ obj.title }} <small> {{ obj.timestampt | timesince }} önce</small></h4>
+              <p>{{ obj.content | linebreaks | truncatechars:120 }}</p>
+              <a href="{{ obj.get_absolut_url }}" class="btn btn-primary" role="button">Daha Fazla</a>
+
+              {% if request.user.campowner == campowner %}<br><br>
+                <a href="{% url 'blog:blog_update' obj.slug %}" class="btn btn-primary" role="button">Düzenle</a>
+              {% endif %}
+            </div>
+
+          </div>
+        </div>
+        {% endfor %}
+     
+
+
+
+    </div>
+  </section>
+ {% block js_ext %}
+ <script>
+
+
+      var marker;
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: {lat: 37.034, lng: 27.430540}
+        });
+        var campLat = {{camp.lat |unlocalize}}
+        var campLng = {{camp.lng |unlocalize}}
+
+        marker = new google.maps.Marker({
+          map: map,
+          draggable: false,
+          animation: google.maps.Animation.DROP,
+          position: {lat: campLat, lng: campLng}
+        });
+        marker.addListener('click', toggleBounce);
+      }
+
+      function toggleBounce() {
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+      }
+    </script>
+   
+          {% endblock js_ext %}
+ {% load static %}
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHbsHWZkLuYDZeEF3zp8Yq_djqNzM_aTM&callback=initMap">
+    </script>
+
+{% endblock content %}
+
+
+
