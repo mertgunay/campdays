@@ -2,7 +2,6 @@ from django import forms
 from campowner.models import CampOwner
 
 class CampOwnerRegisterForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(CampOwnerRegisterForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget.attrs.update({
@@ -11,16 +10,37 @@ class CampOwnerRegisterForm(forms.ModelForm):
             'autocomplete': 'off',
         })
         self.fields['address'].widget.attrs.update({
-            'placeholder': 'Adress',
+            'placeholder': 'Açık Adres',
             'class' : 'form-control',
         })
+        self.fields['web_site'].widget.attrs.update({
+            'placeholder': 'Web Site',
+            'class' : 'form-control',
+        })
+        self.fields['phone_number'].widget.attrs.update({
+            'placeholder': 'Telefon Numarası',
+            'class' : 'form-control',
+        })
+        self.fields['desc'].widget.attrs.update({
+            'placeholder': 'Açıklama',
+            'class' : 'form-control',
+        })
+
+        self.order_fields(sorted(self.fields.keys()))
 
     class Meta:
         model = CampOwner
         fields = {
-            'name',
-            'address',
             'image',
+            'address',
+            'name',
+            'desc',
+            'phone_number',
+            'web_site',
+        }
+
+        widgets = {
+            'desc': forms.Textarea,
         }
 
     def save(self, commit=True):

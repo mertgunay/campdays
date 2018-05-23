@@ -1,35 +1,42 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 # from django.contrib.auth import  authenticate, login, logout, update_session_auth_hash
 # from django.urls import reverse
 from .forms import createAreaForm
 from .models import campLocation
+from campowner.forms import CampOwnerRegisterForm
+from campowner.models import CampOwner, BlockedPosts
+from blog.models import Post
 # Create your views here.
 
 
 
 
 def index(request):
-    
-    return render(request, "index.html") 
+
+    return render(request, "index.html")
 
 def home(request):
-    
-    return render(request, "home.html")      
+
+    return render(request, "home.html")
 
 
 def maps(request):
 
     locs=campLocation.objects.all()
-    
-    return render(request, "maps.html",{'locs':locs})      
+
+    return render(request, "maps.html",{'locs':locs})
 
 
 def createCampingArea(request):
+    campowners = CampOwner.objects.filter(user=request.user)
+    if not campowners:
+        return HttpResponseRedirect("/camps/maps")
+
     if request.method == 'POST':
         form = createAreaForm(request.POST)
         if form.is_valid():
-            creator=request.user
+            creator=request.user.campowner
             campLocation=form.save(commit=False)
             campLocation.creator = creator
             campLocation.lat = form.cleaned_data['lat']
@@ -42,30 +49,36 @@ def createCampingArea(request):
             campLocation.rating = 50
             campLocation.save()
             return redirect('../maps')
-    
+
     form = createAreaForm()
     return render(request, 'addCampArea.html', {'form': form})
 
 
 
 def filter(request):
-    
-    return render(request, "filter.html") 
+
+    return render(request, "filter.html")
 
 def detail(request, id):
     campId = id
     camp = campLocation.objects.get(id=id)
+    obj = get_object_or_404(CampOwner, pk=id)
+    blogs = Post.objects.filter(user=obj.user)
+    context = {
+        'campowner': obj,
+        'object_list': blogs,
+    }
 
-    return render(request, "camp.html", {'camp' : camp}) 
+    return render(request, "camp.html", {'camp' : camp ,'context' : context})
 
 
 # def createCampingArea(request):
 
 #     locs=campLocation.objects.all()
 
-#     return render(request, "addCampArea.html",{'locs':locs})      
+#     return render(request, "addCampArea.html",{'locs':locs})
 
-    
+
 # def register(request):
 #     if request.method == 'POST':
 #         form = SignUpForm(request.POST)
@@ -75,7 +88,7 @@ def detail(request, id):
 #             password = form.cleaned_data['password']
 #             user.set_password(password)
 #             user.save()
-            
+
 #             return redirect('../home')
 #     else:
 #         form = SignUpForm()

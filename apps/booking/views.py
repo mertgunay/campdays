@@ -4,8 +4,13 @@ from django.http import HttpResponseRedirect
 from camps.models import campLocation
 from django.contrib import messages
 from booking.models import Reservation
+from django.contrib.auth import get_user_model
+
 
 import datetime
+
+User = get_user_model()
+
 def booking(request, pk=None):
     camp_location = campLocation.objects.get(pk=pk)
 
@@ -18,9 +23,6 @@ def booking(request, pk=None):
             if calculateAvailability(camp_location, reservation):
                 reservation.save()
                 messages.success(request, "Başarı ile reservasyon yapıldı.")
-                messages.success(request, "Başarı ile r23232323eservasyon yapıldı.")
-                messages.success(request, "Başarı ile reservasy232323232323on yapıldı.")
-                messages.success(request, "Başarı ile reservasyon yapıld3232323232323ı.")
             else:
                 messages.error(request, "Kapasite yetersiz.")
             return HttpResponseRedirect("/")
@@ -44,12 +46,26 @@ def calculateAvailability(camp_location, reservation):
             for date2 in daterange(reservation.check_in, reservation.check_out):
                 if (date == date2):
                     tents += r.tents
+                    tents += reservation.tents
                     guests += r.guests
+                    guests += reservation.guests
             print(date)
             print("bugün için toplam")
             print(tents, guests)
-            tents = 0
-            guests = 0
 
 
+    print("Total tents=", tents, "Total guests=", guests)
     return True
+
+
+
+def list_reservations(request):
+    now = datetime.datetime.now()
+    cont = Reservation.objects.filter(user=request.user).filter(check_out__lte=now).order_by("-timestamp")
+    finished = Reservation.objects.filter(user=request.user).filter(check_out__gte=now).order_by("-timestamp")
+
+    context = {
+        'object_list' : finished,
+        'object_list2' : cont,
+    }
+    return render(request, 'booking/list_reservations.html', context)

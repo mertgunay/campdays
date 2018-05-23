@@ -2,18 +2,79 @@
 
 {% block content %}
 
-{% if banned_users %}
 
-<b>Banlı Kullanıcılar</b>:
-<br>
-<ul>
-{% for ban in banned_users %}
-  <li>{{ban.user.get_full_name}}</li>
-{% endfor %}
-</ul>
-{% else %}
-Banlı kullanıcı yok
-{% endif %}
+<h4>Son 1 saatte giriş yapanlar</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Kullanıcı</th>
+      <th scope="col">Ne zaman ?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in object_list %}
+      <tr>
+        <td>{{user.get_full_name}}</th>
+        <td>{{user.last_login|timesince}} önce</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td>Son 1 satte giriş yapan yok</td>
+        <td></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<hr>
+
+<h4>Son 1 saatte rezervasyon yapanlar</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Kullanıcı</th>
+      <th scope="col">Ne zaman ?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for reservation in reservation_list %}
+      <tr>
+        <td>{{reservation.user.get_full_name}}</th>
+        <td>{{reservation.timestamp|timesince}} önce</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td>Son 1 saatte rezervasyon yok</td>
+        <td></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<hr>
+
+<h4>Son 1 saatte mekan oluşturanlar</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Kim</th>
+      <th scope="col">Ne zaman ?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for camps_area in camps_areas %}
+      <tr>
+        <td>{{camps_area.title}}</th>
+        <td>{{camps_area.dateCreated|timesince}} önce</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td>Son 1 saatte rezervasyon yok</td>
+        <td></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 
 {% endblock content %}

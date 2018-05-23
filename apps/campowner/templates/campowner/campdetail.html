@@ -6,8 +6,16 @@
   <div id="detail_map"></div>
 
   {% if campowner == request.user.campowner %}
-  <a class="btn btn-primary" href="{% url 'blog:create' %}" >Yeni Blog Oluştur</a>
-  <br><br>
+  <div class="row">
+
+    <div class="col-sm-6">
+      <a class="btn btn-primary" href="{% url 'blog:create' %}" >Yeni Blog Oluştur</a>
+    </div>
+    <div class="col-sm-6">
+      <a class="btn btn-primary" href="{% url 'camps:create' %}" >Mekan Ekle</a>
+    </div>
+    <br><br>
+  </div>
  {% endif %}
 
 
@@ -28,7 +36,6 @@
     {% endif %}
   </form>
 
-  <a href="{% url 'booking:reservation' 1 %}" type="button" class="btn btn-default" name="button">Rezervasyon Yap</a>
     <!-- FOLLOW TOGGLE BUTTON END -->
     <br><br>
     Blog
