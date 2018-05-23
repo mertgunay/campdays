@@ -51,5 +51,30 @@
   </tbody>
 </table>
 
+<hr>
+
+<h4>Son 1 saatte mekan oluşturanlar</h4>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Kim</th>
+      <th scope="col">Ne zaman ?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for reservation in reservation_list %}
+      <tr>
+        <td>{{reservation.user.get_full_name}}</th>
+        <td>{{reservation.timestamp|timesince}} önce</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td>Son 1 saatte rezervasyon yok</td>
+        <td></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 
 {% endblock content %}
