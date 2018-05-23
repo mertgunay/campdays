@@ -11,6 +11,7 @@ All custom js files contents are below
 * 06. Counter Script
 * 07. Add field Script
 **************************************/
+
 (function($){
 	"use strict";
 
@@ -23,13 +24,13 @@ All custom js files contents are below
 			$('#back2Top').fadeOut();
 		}
 	});
-	
+
 	$("#back2Top").on('click', function(event) {
 		event.preventDefault();
 		$("html, body").animate({ scrollTop: 0 }, "slow");
 		return false;
 	});
-	
+
 	/*------ Testimonial 1 Script ----*/
 	$('.slick-carousel').slick({
 	  slidesToShow:1,
@@ -53,7 +54,7 @@ All custom js files contents are below
 		}
 	  ]
 	});
-	
+
 	/*------ Testimonial 2 Script ----*/
 	$('.slick-carousel-2').slick({
 	  slidesToShow: 2,
@@ -76,7 +77,7 @@ All custom js files contents are below
 		}
 	  ]
 	});
-	
+
 	/*--- Listing Slide ---*/
 	$('.list-slide').slick({
 	  centerMode: true,
@@ -103,7 +104,7 @@ All custom js files contents are below
 		}
 	  ]
 	});
-	
+
 	/*---- Category Slide ---*/
 	$('.category-slide').slick({
 	  centerMode: true,
@@ -130,13 +131,13 @@ All custom js files contents are below
 		}
 	  ]
 	});
-	
+
 	/*----- Counter Script ------*/
 	$('.counter').counterUp({
 		delay: 80,
 		time: 5000
 	});
-	
+
 	/*-----Add field Script------*/
 	$('.extra-field-box').each(function() {
 	var $wrapp = $('.multi-box', this);
@@ -148,6 +149,6 @@ All custom js files contents are below
 			$(this).parent('.dublicat-box').remove();
 		});
 	});
-	
+
 
 })(jQuery);
