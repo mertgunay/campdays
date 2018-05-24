@@ -25,6 +25,8 @@ def maps(request):
 
     locs=campLocation.objects.all()
 
+    
+
     return render(request, "maps.html",{'locs':locs})
 
 
@@ -62,11 +64,8 @@ def filter(request):
 def detail(request, id):
     campId = id
     camp = campLocation.objects.get(id=id)
-    obj = get_object_or_404(CampOwner, pk=id)
-    blogs = Post.objects.filter(user=obj.user)
+
     context = {
-        'campowner': obj,
-        'object_list': blogs,
     }
 
     return render(request, "camp.html", {'camp' : camp ,'context' : context})
