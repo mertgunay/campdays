@@ -1,18 +1,20 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Create Camp Location</title>
-    {% load static %}
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
+{% load l10n %}
+{% load static %}
+
+{% block content %}
+ {% block css_ext %}
+
     <style>
   
       #map {
-        height: 50%;
+        height: 100%;
+        position:static !important ;
+        overflow: hidden;
       }
       html, body {
-        height: 100%;
+        height: 90%;
         margin: 0;
         padding: 0;
       }
@@ -86,22 +88,42 @@
       #target {
         width: 345px;
       }
-      #floating-panel {
-        position: absolute;
-        top: 10px;
-        left: 25%;
-        z-index: 5;
-        background-color: #fff;
+      #panel {
+        position: sticky !important;
+        float: right;
+        background-color:rgb(250,239,217,0.6);
+        width: 30%;
+        display: block;
+        overflow: auto;
+        padding: 10px;
+        border: 1px solid rgb(170, 30, 30);
+      }
+      #btnCreate {
+        width: 50%;
         padding: 5px;
-        border: 1px solid #999;
+        margin: 5px;
+        text-align: center;
+        
+      }
+      #floating-panel {
+        position: sticky !important;
+        top: 10px;
+        z-index: 5;
+        width: 70%;
+        background-color:rgba(204, 188, 180, 0.7);
+        padding: 5px;
+        border: 1px solid rgb(170, 30, 30);
         text-align: center;
         font-family: 'Roboto','sans-serif';
         line-height: 30px;
-        padding-left: 10px;
+      }
+      #formRow {
+        padding: 2px;
+        text-align: right;
       }
     </style>
-  </head>
-  {% block body %}
+        {% endblock css_ext %}
+
   <body>
     <div id="floating-panel">
       <input id="address" class="controls" type="text" value="Kaş, Antalya">
@@ -109,22 +131,24 @@
     </div>
     <div id="map"></div>
     <div id="panel">
-        {% block content %}
+      <h3>Create Location Form</h3>
         <form  method="post"  action=""> {% csrf_token %}
-            
-           {{ form.lat }}
-           {{ form.lng }}
-           {{ form.name }}
-           {{ form.title }}
-           {{ form.description }}
-           {{ form.max_guests }}
-           {{ form.max_tents }}
+          
+           <div id="formRow"> Latitude: {{ form.lat }} <br></div>
+           <div id="formRow">Longitude:  {{ form.lng }}<br></div>
+           <div id="formRow">Name : {{ form.name }} <br></div>
+           <div id="formRow">Title : {{ form.title }} <br></div>
+           <div id="formRow">Description: {{ form.description }} <br> </div>
+           <div id="formRow">Max Guest: {{ form.max_guests }} <br> </div>
+           <div id="formRow">Max Tents: {{ form.max_tents }}</div> <br>
+
            <input id="lonlat" value="Kaş, Antalya" hidden>
            
-            <button style="margin: 50px; background-color:rgb(255, 255, 60); color: rgb(136, 117, 117); font-size:25px;" class="submit" > Create Location</button>    
+            <button id="btnCreate" class="submit" > Create Location</button>    
         </form>
-        {% endblock %}
     </div>
+    {% block js_ext %}
+
     <script>
       function initMap() {
         var tmpMarkerPosition = new google.maps.LatLng(36.200,29.639550);
@@ -236,10 +260,10 @@ function geocodePosition(geocoder, resultsMap) {
       }
     </script>
     
-     {% load static %}
-    <script async defer
+    {% endblock js_ext %}
+    {% load static %}
+        <script async defer
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHbsHWZkLuYDZeEF3zp8Yq_djqNzM_aTM&libraries=places&callback=initMap"></script>
     </script>
   </body>
   {% endblock %}
-</html>
