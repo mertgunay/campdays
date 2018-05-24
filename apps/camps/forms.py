@@ -6,12 +6,11 @@ from .models import campLocation
 from datetime import datetime 
 
 class createAreaForm(forms.ModelForm):
-    lat  = forms.DecimalField(label=(u'lat'), max_digits=9, decimal_places=6)
-    lng = forms.DecimalField(label=(u'lng'),  max_digits=9, decimal_places=6)
-    name = forms.CharField(label=(u'name'))
+    lat  = forms.DecimalField(label=(u'Latitude -> '), max_digits=9, decimal_places=6)
+    lng = forms.DecimalField(label=(u'Longitude'),  max_digits=9, decimal_places=6)
+    name = forms.CharField(label=(u'Address'))
     title=forms.CharField(label=(u'Title'))
     description=forms.CharField(label=(u'Description'))
-    createDate = forms.DateTimeField(initial=datetime.now(), required=False)
     
 
     class Meta:

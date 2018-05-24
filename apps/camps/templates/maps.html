@@ -1,32 +1,57 @@
+{% extends "base.html" %}
+
 {% load l10n %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <title>Maps</title>
-    {% load static %}
+
+{% block content %}
+ {% block css_ext %}
+
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 50%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
         height: 100%;
+        position:static !important ;
+        overflow: hidden;
+      }
+      #floating-panel{
+        position: sticky !important ;
+        float: right;
+        z-index: 5;
+      }
+      #submit {
+        padding: 15px;
+        font-size: 20px;
+        border: 1px solid rgb(170, 30, 30);
+      }
+      #windBtn {
+        color: red;
+      }
+      #infoWind {
+        padding: 4px;
+        width: 220px;
+        background-color:rgb(250,239,217,0.6);
+
+        
+      }
+      html, body {
+        height: 90%;
         margin: 0;
         padding: 0;
       }
+      /* Optional: Makes the sample page fill the window. */
+      
     </style>
-  </head>
-  {% block content %}
-  <body>
+    {% endblock css_ext %}
+
     <div id="map"></div>
+    <div id="floating-panel">
+        <input id="submit" type="button" value="Find My Location">
+      </div>
 
     
      
 
+    {% block js_ext %}
     
     <script>
         
@@ -34,30 +59,45 @@
       function initMap() {
 
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 3,
+          zoom: 4,
           center: {lat: 36.200, lng: 29.639550}
         });
 
-        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-  var markers = locations.map(function(location,i) {
-    
-          return new google.maps.Marker({
-            position: location,
-            label: labels[i % labels.length],
+        myLocation = new google.maps.Marker({
+          map: map,
+          position: null,
+          animation: google.maps.Animation.DROP,
           });
+   
+        document.getElementById('submit').addEventListener('click', function() {
+            if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+        alert("Geolocation is not supported by this browser.");
+        }  
+        });
+var infowindow = new google.maps.InfoWindow();
+        for (var i = 0; i < locations.length; i++) {
+    
+    var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i].lat, locations[i].lng),
+        map: map,
+        title: locations[i].content
+    });
 
-        });
-        for( var t= 0; t < markers.lenth; t++){
-        google.maps.event.addListener(markers[t], 'click', function () {
-        infowindow.content = locationss[t].content;
-        infowindow.open(map, this);
-        });
+    google.maps.event.addListener(marker, 'click', (function (marker, i) {
+        return function () {
+//          map.center = marker.position;
+            infowindow.setContent(locations[i].content);
+            infowindow.open(map, marker);
+            
         }
-        var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+    })(marker, i)); 
+}
+
+
+
         }
-        var infowindow;
 
         var latDB;
         var lngDB;
@@ -65,28 +105,38 @@
         var contents = [];
         var locations= [];
         var contentString;
+        var myLocation;
         
         {% for e in locs  %}
         latDB = {{e.lat |unlocalize }};
         lngDB = {{e.lng |unlocalize }};
-        contentString = '<div id=content>'+ '<p>{{e.title}}</p> '+ '</div> ';
+        id = {{e.id}}
+        contentString = '<div class="container" id="infoWind">'+ '<div class"col-sm-6"> <img src="https://source.unsplash.com/200x110"></div>' +
+         '<div class"col-sm-6"> <h5> {{e.title}} </h5> <br> <p> {{e.title}} </p> <br> <p> {{e.description}} </p> <button id="windBtn"  class="button" href="/camps/detail/{{e.id}}">Details</button></div>' + '</div> ';
         
-        locations.push({lat: latDB,lng: lngDB,content : contentString });
+        locations.push({id: id, lat: latDB,lng: lngDB,content : contentString });
         
        
         {% endfor %}
-
+      
+        
+        //called by FindMyLoc btn to set pin on current location
+        function showPosition(position) {
+        var latMy = position.coords.latitude;
+        var lngMy = position.coords.longitude;
+        myLocation.position = ({lat: latMy, lng: lngMy});
+        console.log(myLocation)
+        myLocation.setPosition(myLocation.position);
+        }
         
     </script>
    
-
+   {% endblock js_ext %}
+   {% load static %}
 
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
-    {% load static %}
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHbsHWZkLuYDZeEF3zp8Yq_djqNzM_aTM&callback=initMap">
     </script>
-  </body>
-  {% endblock %}
-</html>
+{% endblock content %}
