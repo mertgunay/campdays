@@ -29,9 +29,8 @@
       #infoWind {
         padding: 4px;
         width: 220px;
-        background-color:rgb(250,239,217,0.6);
 
-        
+
       }
       html, body {
         height: 90%;
@@ -39,7 +38,7 @@
         padding: 0;
       }
       /* Optional: Makes the sample page fill the window. */
-      
+
     </style>
     {% endblock css_ext %}
 
@@ -48,13 +47,13 @@
         <input id="submit" type="button" value="Find My Location">
       </div>
 
-    
-     
+
+
 
     {% block js_ext %}
-    
+
     <script>
-        
+
 
       function initMap() {
 
@@ -68,17 +67,17 @@
           position: null,
           animation: google.maps.Animation.DROP,
           });
-   
+
         document.getElementById('submit').addEventListener('click', function() {
             if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
         } else {
         alert("Geolocation is not supported by this browser.");
-        }  
+        }
         });
 var infowindow = new google.maps.InfoWindow();
         for (var i = 0; i < locations.length; i++) {
-    
+
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(locations[i].lat, locations[i].lng),
         map: map,
@@ -90,9 +89,9 @@ var infowindow = new google.maps.InfoWindow();
 //          map.center = marker.position;
             infowindow.setContent(locations[i].content);
             infowindow.open(map, marker);
-            
+
         }
-    })(marker, i)); 
+    })(marker, i));
 }
 
 
@@ -104,22 +103,23 @@ var infowindow = new google.maps.InfoWindow();
         var title;
         var contents = [];
         var locations= [];
-        var contentString;
+        var contentString = "";
         var myLocation;
-        
+
         {% for e in locs  %}
         latDB = {{e.lat |unlocalize }};
         lngDB = {{e.lng |unlocalize }};
         id = {{e.id}}
-        contentString = '<div class="container" id="infoWind">'+ '<div class"col-sm-6"> <img src="https://source.unsplash.com/200x110"></div>' +
-         '<div class"col-sm-6"> <h5> {{e.title}} </h5> <br> <p> {{e.title}} </p> <br> <p> {{e.description}} </p> <button id="windBtn"  class="button" href="/camps/detail/{{e.id}}">Details</button></div>' + '</div> ';
-        
+
+        contentString += '<div class="container" id="infoWind">'+ '<div class"col-sm-6"> <img src="{{e.creator.user.post_set.first.image.url}}"></div>' +
+         '<div class"col-sm-6"> <h5> {{e.title}} </h5> <br> <p> {{e.title}} </p> <br> <p> {{e.description}} </p> <a id="windBtn" style="color:#ffffff;"  class="btn btn-primary" href="/camps/detail/{{e.id}}">Details</a></div>' + '</div> ';
+
         locations.push({id: id, lat: latDB,lng: lngDB,content : contentString });
-        
-       
+
+
         {% endfor %}
-      
-        
+
+
         //called by FindMyLoc btn to set pin on current location
         function showPosition(position) {
         var latMy = position.coords.latitude;
@@ -128,9 +128,9 @@ var infowindow = new google.maps.InfoWindow();
         console.log(myLocation)
         myLocation.setPosition(myLocation.position);
         }
-        
+
     </script>
-   
+
    {% endblock js_ext %}
    {% load static %}
 

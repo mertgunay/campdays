@@ -8,15 +8,21 @@
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 300px;
+        height: 100%;
         position:static !important ;
         overflow: hidden;
+      }
+
+      html, body {
+        height: 90%;
+        margin: 0;
+        padding: 0;
       }
       /* Optional: Makes the sample page fill the window. */
 
     </style>
     {% endblock css_ext %}
-    <div class="container" style="height: 250px !important; width: 250px; display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center',"> 
+    <div class="container" style="height: 250px !important; width: 250px; display: 'flex', flexFlow: 'row nowrap', justifyContent: 'center',">
         <div id="map"></div>
     </div>
 
@@ -29,23 +35,8 @@
 
 
   {{campowner.name}} <br>
-  <form class="" action="{% url 'users:campowner_follow' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="campowner.id" value="
-    {% if campowner.id %}
-      {{campowner.id}}
-    {% else %}
-    {% endif %}
-    ">
 
-    {% if request.user in campowner.campprofile.followers.all %}
-    <button type="submit" class="btn btn-danger">Takibi bırak</button>
-    {% else %}
-    <button type="submit" class="btn btn-success">Takip Et</button>
-    {% endif %}
-  </form>
-
-  <a href="{% url 'booking:reservation' 1 %}" type="button" class="btn btn-default" name="button">Rezervasyon Yap</a>
+  <a href="{% url 'booking:reservation' camp.id %}" type="button" class="btn btn-default" name="button">Rezervasyon Yap</a>
        <div class="container" style="position: fixed">
 
     <h1> {{camp.name}} </h1>
@@ -97,7 +88,7 @@
           </div>
         </div>
         {% endfor %}
-     
+
 
 
 
@@ -134,7 +125,7 @@
         }
       }
     </script>
-   
+
           {% endblock js_ext %}
  {% load static %}
     <script async defer
@@ -142,6 +133,3 @@
     </script>
 
 {% endblock content %}
-
-
-
